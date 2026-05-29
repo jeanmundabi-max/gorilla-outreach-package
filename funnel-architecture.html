@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gorilla — Funnel Architecture | MDB Growth Capital</title>
+<style>
+  :root {
+    --g-orange: #FF6B35;
+    --g-navy: #0D1B2A;
+    --g-navy-mid: #1A2E42;
+    --g-navy-light: #243B55;
+    --g-text: #E8EDF2;
+    --g-text-muted: #8FA3BE;
+    --g-white: #FFFFFF;
+    --g-border-light: rgba(255,255,255,0.08);
+    --g-green: #4CAF79;
+    --g-red: #E94560;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Space Grotesk', system-ui, sans-serif; background: var(--g-navy); color: var(--g-text); font-size: 16px; line-height: 1.6; padding: 0 0 80px; -webkit-font-smoothing: antialiased; }
+
+  header { background: var(--g-navy-mid); border-bottom: 1px solid var(--g-border-light); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .brand { font-size: 17px; font-weight: 700; color: var(--g-white); }
+  .brand span { color: var(--g-orange); }
+  .header-meta { font-size: 12px; color: var(--g-text-muted); text-align: right; line-height: 1.5; }
+
+  .page-hero { padding: 56px 48px 32px; max-width: 1200px; margin: 0 auto; }
+  .page-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-orange); margin-bottom: 14px; }
+  .page-title { font-size: clamp(26px, 3vw, 38px); font-weight: 700; color: var(--g-white); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px; }
+  .page-sub { font-size: 16px; color: var(--g-text-muted); max-width: 680px; line-height: 1.65; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+  section { padding: 48px 0; border-top: 1px solid var(--g-border-light); }
+
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-orange); margin-bottom: 14px; }
+  .section-title { font-size: 24px; font-weight: 700; color: var(--g-white); letter-spacing: -0.02em; margin-bottom: 28px; }
+
+  /* CASCADE TABLE */
+  .cascade-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; }
+
+  .cascade-table thead th {
+    background: var(--g-navy-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--g-text-muted);
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--g-border-light);
+  }
+
+  .cascade-table thead th:first-child { width: 120px; text-align: center; }
+  .cascade-table thead th:nth-child(2) { width: 200px; }
+
+  .cascade-table tbody tr { border-bottom: 1px solid var(--g-border-light); }
+  .cascade-table tbody tr:last-child td { border-bottom: none; }
+
+  .cascade-table td {
+    padding: 20px 20px;
+    font-size: 14px;
+    color: var(--g-text-muted);
+    vertical-align: top;
+    line-height: 1.6;
+    border-right: 1px solid var(--g-border-light);
+  }
+
+  .cascade-table td:last-child { border-right: none; }
+
+  .stage-cell {
+    background: rgba(255,107,53,0.06);
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--g-orange);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .what-cell strong { display: block; font-size: 15px; font-weight: 700; color: var(--g-white); margin-bottom: 8px; }
+  .what-cell em { font-style: normal; font-size: 13px; color: var(--g-text-muted); }
+
+  .today-cell { background: rgba(233,69,96,0.04); }
+  .install-cell { background: rgba(76,175,121,0.04); }
+  .missing-cell { background: rgba(255,107,53,0.04); }
+
+  .status-bad { color: var(--g-red); font-weight: 600; }
+  .status-good { color: var(--g-green); font-weight: 600; }
+  .status-gap { color: var(--g-orange); font-weight: 600; }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 3px;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-red { background: rgba(233,69,96,0.12); color: var(--g-red); }
+  .tag-green { background: rgba(76,175,121,0.12); color: var(--g-green); }
+  .tag-orange { background: rgba(255,107,53,0.12); color: var(--g-orange); }
+
+  /* GROWTH LOOPS */
+  .loops-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 16px; }
+
+  .loop-card {
+    background: var(--g-navy-mid);
+    border: 1px solid var(--g-border-light);
+    border-radius: 12px;
+    padding: 32px 28px;
+    position: relative;
+  }
+
+  .loop-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(255,107,53,0.1);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .loop-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--g-white);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .loop-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .loop-step {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--g-text-muted);
+    line-height: 1.5;
+  }
+
+  .loop-arrow {
+    flex-shrink: 0;
+    color: var(--g-orange);
+    font-size: 14px;
+    margin-top: 1px;
+  }
+
+  .loop-outcome {
+    background: rgba(255,107,53,0.07);
+    border: 1px solid rgba(255,107,53,0.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--g-text-muted);
+    line-height: 1.5;
+  }
+
+  .loop-outcome strong { display: block; color: var(--g-orange); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* LEAK MAP */
+  .leak-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .leak-card {
+    background: var(--g-navy-mid);
+    border: 1px solid var(--g-border-light);
+    border-radius: 10px;
+    padding: 24px 28px;
+    border-left: 3px solid var(--g-red);
+  }
+
+  .leak-card.installed { border-left-color: var(--g-green); }
+
+  .leak-title { font-size: 15px; font-weight: 700; color: var(--g-white); margin-bottom: 8px; }
+  .leak-desc { font-size: 14px; color: var(--g-text-muted); line-height: 1.6; }
+  .leak-impact { font-size: 12px; color: var(--g-orange); font-weight: 600; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  footer-note { display: block; margin-top: 48px; font-size: 13px; color: var(--g-text-muted); text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">gorilla<span>.</span> × <span style="color:var(--g-text-muted);font-weight:500">MDB</span></div>
+  <div class="header-meta">Funnel Architecture — Mid-Market Energy Retailer Acquisition<br>Prepared by Jean Mundabi Fala — MDB Growth Capital — 2026-05-22</div>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">Funnel Architecture</div>
+  <h1 class="page-title">ToFu to BoFu: What Gorilla Has, What MDB Installs, What Is Missing</h1>
+  <p class="page-sub">The full funnel cascade for mid-market UK and European energy retailer acquisition. Three columns: today's state, what MDB installs, and what the gap costs Gorilla each month it remains unfilled.</p>
+</div>
+
+<!-- CASCADE TABLE -->
+<section>
+  <div class="container">
+    <div class="section-label">Funnel Cascade</div>
+    <div class="section-title">ToFu to BoFu — Today, MDB Install, Missing</div>
+
+    <table class="cascade-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>What Happens Here</th>
+          <th class="today-cell">Today (Current State)</th>
+          <th class="install-cell">MDB Installs</th>
+          <th class="missing-cell">What Is Missing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="stage-cell">Top of Funnel</td>
+          <td class="what-cell">
+            <strong>Awareness</strong>
+            <em>Energy retailer decision-makers discover Gorilla exists and understand what it does</em>
+          </td>
+          <td class="today-cell">
+            LinkedIn paid ads (energy professionals broadly). Google paid ads (keyword-based). Thought leadership blog posts and case studies. Ruben keynotes at Utility Week Live and Future of Utilities Summit. Reuters Awards media coverage.
+            <br><br>
+            <span class="tag tag-red">Gap: No signal targeting</span>
+            <br>Gorilla reaches energy professionals. It does not identify which of the 80 UK licensed suppliers is in an active buying window this week.
+          </td>
+          <td class="install-cell">
+            Signal database: 30 named UK and European energy retailers segmented by MHHS migration status, pricing analyst job postings, Ofgem compliance data, and Companies House director changes.
+            <br><br>
+            Weekly database updates. Tier 1 companies (15, two or more confirmed signals) identified as highest-priority outreach targets.
+            <br><br>
+            <span class="tag tag-green">Installed: Week 1</span>
+          </td>
+          <td class="missing-cell">
+            No automated monitoring for new buying signals across all 80 UK licensed suppliers.
+            <br><br>
+            No trigger-based outreach within 72 hours of a new job posting, Ofgem enforcement notice, or director change.
+            <br><br>
+            <span class="tag tag-orange">Cost of gap: Every month without this, 3 to 5 mid-market suppliers enter a buying window that Gorilla does not know about until too late.</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="stage-cell">Middle of Funnel</td>
+          <td class="what-cell">
+            <strong>Alignment</strong>
+            <em>Interested energy retailers understand that Gorilla specifically solves their problem</em>
+          </td>
+          <td class="today-cell">
+            gorilla.co case studies (Centrica, Synergy). Blog posts and white papers on MHHS, margin intelligence. HubSpot email nurture foundations exist. Dreamdata attribution.
+            <br><br>
+            <span class="tag tag-red">Gap: Generic positioning</span>
+            <br>Case studies are enterprise tier only (British Gas, Shell scale). A mid-market supplier with 150,000 customers cannot easily self-identify in the Centrica case study.
+          </td>
+          <td class="install-cell">
+            Segment-specific landing page in the voice of a mid-market energy retailer CFO and Head of Pricing.
+            <br><br>
+            Margin readiness scorecard (8-question interactive tool). Converts cold outreach targets to pre-qualified demo requests before the first call.
+            <br><br>
+            Pre-call intelligence briefs: MHHS readiness score, settlement leakage estimate, primary objection, relevant case study — all prepared before every demo call.
+            <br><br>
+            <span class="tag tag-green">Installed: Week 2 to 3</span>
+          </td>
+          <td class="missing-cell">
+            No mid-market-specific case study showing a comparable supplier's before and after.
+            <br><br>
+            No content specifically for the in-house build decision moment — the "do we hire a data engineer or deploy Gorilla?" fork.
+            <br><br>
+            No MHHS readiness comparison tool that helps a mid-market supplier see their own gap against the October 2026 milestone.
+            <br><br>
+            <span class="tag tag-orange">Cost of gap: Without mid-market alignment content, the Centrica case study creates aspiration but not recognition. Deals take longer to close because prospects cannot see themselves.</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="stage-cell">Bottom of Funnel</td>
+          <td class="what-cell">
+            <strong>Activation</strong>
+            <em>Aligned prospects take the first commercial action — booking a demo or requesting a proposal</em>
+          </td>
+          <td class="today-cell">
+            Demo request form on gorilla.co. Ruben and commercial team take every initial call. No systematic pre-call qualification or briefing process documented.
+            <br><br>
+            <span class="tag tag-red">Gap: Founder-led bottleneck</span>
+            <br>At 103 employees and a Series B board expecting pipeline, every qualified commercial conversation that requires Ruben's time is a bottleneck on the growth rate.
+          </td>
+          <td class="install-cell">
+            Trigger-based outreach (email_1: Trigger + email_2: Friction) reaches Tier 1 companies at the specific buying window moment with a direct delivery CTA.
+            <br><br>
+            Scorecard email capture enables automated demo booking before a Gorilla team member is involved.
+            <br><br>
+            Pre-call intelligence briefs mean Gorilla's commercial team enters every call with full context — no discovery wasted on questions the brief already answers.
+            <br><br>
+            <span class="tag tag-green">Installed: Week 2 to 4</span>
+          </td>
+          <td class="missing-cell">
+            No qualification system that scores inbound demo requests before Gorilla's commercial team invests time.
+            <br><br>
+            No systematic way to distinguish a £250,000 ARR prospect from a curiosity browser before the first call.
+            <br><br>
+            <span class="tag tag-orange">Cost of gap: Without activation qualification, Gorilla's commercial team spends the same preparation time on a 20,000-customer startup as on a 300,000-customer mid-market supplier in a live MHHS crisis.</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="stage-cell">Sale and Expand</td>
+          <td class="what-cell">
+            <strong>Close and Expand</strong>
+            <em>Commercial proposals accepted, pilots expanded to enterprise contracts, existing customers expand scope</em>
+          </td>
+          <td class="today-cell">
+            Gorilla's commercial team handles proposals and pilots directly. SEFE and Drax are confirmed Gorilla customers showing expansion signals (portfolio growth, new product types).
+            <br><br>
+            <span class="tag tag-red">Gap: No systematic expansion trigger</span>
+            <br>No process for monitoring expansion signals within existing customer accounts and triggering commercial outreach before the customer identifies the need themselves.
+          </td>
+          <td class="install-cell">
+            Expansion signal monitoring: existing Gorilla customers tracked for portfolio growth, new product launches, director changes, and MHHS milestone data.
+            <br><br>
+            When SEFE posts for a new pricing analyst or expands their customer book by 20%, that is an upsell trigger — not a random quarterly check-in.
+            <br><br>
+            <span class="tag tag-green">Available from Week 4</span>
+          </td>
+          <td class="missing-cell">
+            No structured re-engagement process for the 70% of Tier 1 companies that do not convert in the first 30-day cycle — and will be in a buying window again at a different moment (new director, MHHS readiness failure, Q4 budget release).
+            <br><br>
+            <span class="tag tag-orange">Cost of gap: Without a re-engagement cycle, Gorilla reaches the right companies at the wrong moment. They say no once and disappear from the pipeline. The same company will be ready in 6 to 18 months — but there is no system to be there when that moment arrives.</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LEAK MAP -->
+<section>
+  <div class="container">
+    <div class="section-label">Revenue Leak Map</div>
+    <div class="section-title">Where qualified mid-market suppliers currently exit Gorilla's funnel</div>
+    <div class="leak-grid">
+      <div class="leak-card">
+        <div class="leak-title">Leak 1 — Invisible buying window</div>
+        <div class="leak-desc">A mid-market supplier posts for a Senior Pricing Analyst on Energy Jobline. Gorilla's LinkedIn ads reach energy professionals broadly. They do not flag that posting to Gorilla's commercial team. The supplier hires the analyst. Two months later they start building internally. The buying window closes.</div>
+        <div class="leak-impact">MDB fix: Signal database + 72-hour trigger outreach</div>
+      </div>
+      <div class="leak-card">
+        <div class="leak-title">Leak 2 — Enterprise case studies only</div>
+        <div class="leak-desc">A Head of Pricing at a 180,000-customer mid-market supplier reads the Centrica case study. British Gas serves millions of customers — the data volumes, implementation complexity, and internal IT resources are completely different to their situation. She closes the tab. The connection is never made.</div>
+        <div class="leak-impact">MDB fix: Mid-market segment landing page + pre-call brief</div>
+      </div>
+      <div class="leak-card">
+        <div class="leak-title">Leak 3 — In-house build decision made before Gorilla arrives</div>
+        <div class="leak-desc">An energy retailer validates the MHHS data problem, decides to solve it with headcount, makes the hire, and the new data engineer starts building. Three weeks after the hire, Gorilla's outreach lands. The answer is always "we're handling it internally." The in-house build becomes entrenched. Gorilla is now competing with sunk cost, not a blank decision.</div>
+        <div class="leak-impact">MDB fix: Job posting trigger outreach within 72 hours</div>
+      </div>
+      <div class="leak-card">
+        <div class="leak-title">Leak 4 — Demo without pre-qualification</div>
+        <div class="leak-desc">An energy retailer books a demo. Gorilla's commercial team takes the call. It becomes clear in the first 10 minutes that the company has 15,000 customers, is pre-Series A, and does not have the integration infrastructure to deploy Gorilla for another 12 months. 45 minutes spent. No conversion. No structured path for when they are ready.</div>
+        <div class="leak-impact">MDB fix: Scorecard qualification + staged pipeline routing</div>
+      </div>
+      <div class="leak-card installed">
+        <div class="leak-title">Closed — Enterprise Tier Acquisition (existing model)</div>
+        <div class="leak-desc">Gorilla's existing customer acquisition model — founder-led relationships, conference presence, partner referrals — works extremely well for the enterprise tier. British Gas, Shell, EDF, SEFE, Drax, ScottishPower: all acquired through this channel. This is not a leak. This is a ceiling.</div>
+        <div class="leak-impact" style="color:var(--g-green)">Status: Working — model does not scale to mid-market without MDB infrastructure</div>
+      </div>
+      <div class="leak-card installed">
+        <div class="leak-title">Closed — Thought Leadership and Category Creation</div>
+        <div class="leak-desc">Gorilla's "Energy Margin Intelligence" category launch in November 2025, Reuters Awards nomination, and Utility Week Live presence create strong brand awareness in the market. Energy retailers know the name. The gap is converting that awareness into active pipeline conversations before buying windows close.</div>
+        <div class="leak-impact" style="color:var(--g-green)">Status: Working — needs signal-based activation layer on top</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH LOOPS -->
+<section>
+  <div class="container">
+    <div class="section-label">Growth Feedback Loops</div>
+    <div class="section-title">Three compounding loops that make Gorilla's mid-market acquisition stronger over time</div>
+    <div class="loops-grid">
+      <div class="loop-card">
+        <div class="loop-number">01</div>
+        <div class="loop-title">Core Acquisition Loop — Signal to Contract</div>
+        <div class="loop-steps">
+          <div class="loop-step"><span class="loop-arrow">→</span><span>MHHS migration signal fires (job posting, Ofgem action, director change)</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Trigger outreach within 72 hours — email or LinkedIn DM referencing the specific signal</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Prospect completes margin readiness scorecard — identifies own gap score</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Demo booked — Gorilla's team receives pre-call brief before the call</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Proposal issued — mid-market ACV £150,000 to £300,000</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Contract signed — new case study available for next target segment</span></div>
+        </div>
+        <div class="loop-outcome">
+          <strong>Compounding effect</strong>
+          Every new mid-market contract produces a case study comparable to the next prospect. The Centrica enterprise case study converts enterprise buyers. A Yü Energy mid-market case study converts mid-market buyers. The database grows stronger with each contract.
+        </div>
+      </div>
+      <div class="loop-card">
+        <div class="loop-number">02</div>
+        <div class="loop-title">Credibility Loop — Case Study Compounding</div>
+        <div class="loop-steps">
+          <div class="loop-step"><span class="loop-arrow">→</span><span>New mid-market customer signed and implementing Gorilla</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Customer achieves measurable result (settlement leakage reduced, MHHS readiness score improved, pricing time cut)</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Result quantified and added to case study library with comparable supplier profile</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Next prospect in same segment sees a supplier with the same customer count and product mix</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Self-identification happens — "that is us" — conversion friction drops</span></div>
+        </div>
+        <div class="loop-outcome">
+          <strong>Compounding effect</strong>
+          The third mid-market case study closes deals faster than the first because the evidence stack is growing. The conversion timeline shortens with each case study added at the relevant segment level.
+        </div>
+      </div>
+      <div class="loop-card">
+        <div class="loop-number">03</div>
+        <div class="loop-title">Test and Scale Loop — Signal Quality Improvement</div>
+        <div class="loop-steps">
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Outreach sequence runs across Tier 1 list</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Reply data shows which signal type (job posting vs director change vs Ofgem action) converts at highest rate</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Database updated — highest-converting signal types weighted more heavily in Tier 1 scoring</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Outreach framing adjusted to match the signal type with the highest open and reply rate</span></div>
+          <div class="loop-step"><span class="loop-arrow">→</span><span>Next cycle produces higher reply rate and faster pipeline velocity</span></div>
+        </div>
+        <div class="loop-outcome">
+          <strong>Compounding effect</strong>
+          Gorilla owns the database and all signal data when the MDB engagement concludes. The system gets more accurate with every cycle because real-world response data improves the signal scoring model. It is not a campaign — it is infrastructure that learns.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <footer-note>Funnel Architecture prepared by MDB Growth Capital. Strategy and GTM research by Jean Mundabi Fala. For Gorilla — Ruben Van den Bossche.</footer-note>
+</div>
+
+</body>
+</html>

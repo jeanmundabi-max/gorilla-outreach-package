@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruben — Here Is How Gorilla Reaches Mid-Market Energy Retailers Before They Build In-House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #FF6B35;
+    --accent: #E55A25;
+    --navy: #0D1B2A;
+    --navy-mid: #1A2E42;
+    --navy-light: #243B55;
+    --off-white: #1A2E42;
+    --white: #ffffff;
+    --border: rgba(255,107,53,0.18);
+    --dark-text: #E8EDF2;
+    --text-muted: #8FA3BE;
+    --r-md: 12px;
+    --r-sm: 8px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.18);
+    --font-main: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--navy);
+    color: var(--dark-text);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 24px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,27,42,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 60px;
+  }
+  .nav-logo {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .nav-logo span { color: var(--primary); }
+  .nav-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1c2e45 100%);
+    padding: 80px 40px 72px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(255,107,53,0.15);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,107,53,0.3);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    color: var(--primary);
+    font-style: normal;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin-bottom: 32px;
+    line-height: 1.65;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta-item {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .hero-meta-item strong {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--navy-mid);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .stat-item {
+    flex: 1;
+    min-width: 160px;
+    padding: 20px 28px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    background: rgba(13,27,42,0.6);
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 16px 20px 6px;
+  }
+  .nav-link {
+    display: block;
+    padding: 7px 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+    line-height: 1.4;
+  }
+  .nav-link:hover {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: rgba(255,107,53,0.06);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 48px 48px 80px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 64px;
+    scroll-margin-top: 80px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    opacity: 0.7;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  /* ── CALLOUT BOX ── */
+  .callout {
+    background: rgba(255,107,53,0.08);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--dark-text);
+  }
+  .methodology-callout {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: rgba(255,107,53,0.07);
+    border-left: 3px solid var(--primary);
+    border-radius: var(--r-sm);
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--dark-text);
+  }
+
+  /* ── VIDEO PLACEHOLDER ── */
+  .video-placeholder {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 48px 32px;
+    text-align: center;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .video-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,107,53,0.04) 0%, transparent 60%);
+  }
+  .play-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px; height: 64px;
+    background: var(--primary);
+    border-radius: 50%;
+    font-size: 24px;
+    color: var(--white);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .video-placeholder p {
+    color: var(--text-muted);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .video-placeholder strong {
+    color: var(--white);
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  /* ── ACCORDION ── */
+  details.acc {
+    margin-bottom: 20px;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--navy-mid);
+    box-shadow: var(--shadow-sm);
+  }
+  details.acc > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+    user-select: none;
+    background: rgba(255,107,53,0.08);
+    border-bottom: 1px solid transparent;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+  details.acc[open] > summary {
+    border-bottom: 1px solid var(--border);
+  }
+  details.acc > summary::-webkit-details-marker { display: none; }
+  details.acc > summary .acc-chevron {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--primary);
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  details.acc[open] > summary .acc-chevron { transform: rotate(180deg); }
+  details.acc .acc-body {
+    padding: 20px 24px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--dark-text);
+  }
+  details.acc .acc-body p { margin-bottom: 12px; }
+  details.acc .acc-body p:last-child { margin-bottom: 0; }
+
+  /* ── TOGGLE (video scripts, pre-call emails) ── */
+  details.tog > summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 10px 0;
+    user-select: none;
+    color: var(--primary);
+  }
+  details.tog > summary::-webkit-details-marker { display: none; }
+  details.tog .tog-body {
+    padding: 16px 20px;
+    background: var(--navy-mid);
+    border-radius: var(--r-sm);
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--dark-text);
+    border: 1px solid var(--border);
+  }
+  details.tog .tog-body p { margin-bottom: 10px; }
+  details.tog .tog-body p:last-child { margin-bottom: 0; }
+
+  /* Light toggle (LinkedIn posts, sprint tables) */
+  details.tog.light > summary {
+    color: var(--primary);
+    padding: 10px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid var(--border);
+    background: rgba(255,107,53,0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details.tog.light .tog-body {
+    border-radius: 0 0 var(--r-sm) var(--r-sm);
+    border-top: none;
+    margin-top: 0;
+  }
+
+  /* ── FINDING CARDS ── */
+  .finding-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .finding-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .finding-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .finding-card p {
+    font-size: 15px;
+    color: var(--dark-text);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .finding-card p:last-child { margin-bottom: 0; }
+  .stat-badge {
+    display: inline-block;
+    background: rgba(255,107,53,0.15);
+    border: 1px solid rgba(255,107,53,0.3);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-top: 12px;
+  }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 24px 0;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .data-table thead tr {
+    background: rgba(255,107,53,0.12);
+  }
+  .data-table th {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 12px 14px;
+    border-top: 1px solid var(--border);
+    color: var(--dark-text);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .data-table tr:hover td {
+    background: rgba(255,107,53,0.04);
+  }
+  .badge-strong {
+    background: rgba(34,197,94,0.15);
+    color: #4ade80;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-moderate {
+    background: rgba(251,191,36,0.15);
+    color: #fbbf24;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ── STAGE CARDS ── */
+  .stage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .stage-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 20px;
+  }
+  .stage-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .stage-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .stage-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── SPRINT TABLE ── */
+  .sprint-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  .sprint-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+  }
+  .sprint-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,107,53,0.08);
+    vertical-align: top;
+    color: var(--dark-text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .sprint-table td:first-child {
+    color: var(--primary);
+    font-weight: 600;
+    white-space: nowrap;
+    width: 80px;
+  }
+
+  /* ── TOC LIST ── */
+  .toc-list {
+    list-style: none;
+    counter-reset: toc;
+    padding: 0;
+  }
+  .toc-list li {
+    counter-increment: toc;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,107,53,0.08);
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .toc-list li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+  .toc-list a {
+    color: var(--dark-text);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.15s;
+  }
+  .toc-list a:hover { color: var(--primary); }
+
+  /* ── ALREADY BUILT STRIP ── */
+  .built-strip {
+    background: rgba(255,107,53,0.1);
+    border: 1px solid rgba(255,107,53,0.25);
+    border-radius: var(--r-md);
+    padding: 20px 24px;
+    margin: 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .built-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .built-strip p {
+    font-size: 15px;
+    color: var(--dark-text);
+    margin: 0;
+  }
+  .built-strip strong { color: var(--primary); }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, rgba(255,107,53,0.08) 100%);
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: var(--r-md);
+    padding: 40px 40px;
+    text-align: center;
+    margin: 32px 0;
+  }
+  .cta-section h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .cta-section p {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 24px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--white);
+    font-family: var(--font-main);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--accent); }
+  .cta-alt {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .cta-alt strong { color: var(--primary); }
+
+  /* ── FAQ ── */
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .faq-q {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .faq-a {
+    font-size: 15px;
+    color: var(--dark-text);
+    line-height: 1.7;
+  }
+
+  /* ── ABOUT ── */
+  .about-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 28px 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .about-initials {
+    width: 56px; height: 56px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .about-text h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .about-text .role-label {
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .about-text p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .about-quote {
+    font-style: italic;
+    color: var(--dark-text);
+    font-size: 14px;
+    margin-top: 12px;
+    padding-left: 14px;
+    border-left: 2px solid var(--primary);
+    line-height: 1.65;
+  }
+
+  /* ── NURTURE EMAILS ── */
+  .nurture-item {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,107,53,0.08);
+  }
+  .nurture-week {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .nurture-subject {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .nurture-opener {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── COMPONENT CARDS ── */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .component-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 18px 20px;
+  }
+  .component-card .comp-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .component-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .component-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main-content { padding: 32px 24px 60px; }
+    .hero { padding: 48px 24px 48px; }
+    nav { padding: 0 24px; }
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item { min-width: 140px; }
+    .about-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">Built for Ruben Van den Bossche · Gorilla · May 2026 · MDB Growth Capital</div>
+
+<nav>
+  <div class="nav-logo">Gorilla<span> ·</span> Revenue Brief</div>
+  <div class="nav-meta">Prepared by Jean Mundabi Fala · MDB Growth Capital</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">MHHS Migration Window · October 2026</div>
+    <h1>Here Is How Gorilla Reaches<br><em>Mid-Market Energy Retailers</em><br>Before They Build In-House</h1>
+    <p class="hero-sub">Ruben — MDB mapped 40 UK and European energy retailers in active buying windows before sending a single email. The targeting database, outreach sequences, and landing page are already built.</p>
+    <blockquote class="callout" style="margin-bottom:0;">"This document shows you the exact companies to reach, the moment to reach them, and what to say. MDB built everything before you said yes."</blockquote>
+    <div class="hero-meta">
+      <div class="hero-meta-item">Prepared for: <strong>Ruben Van den Bossche</strong></div>
+      <div class="hero-meta-item">Title: <strong>Co-founder and CEO, Gorilla</strong></div>
+      <div class="hero-meta-item">Date: <strong>May 2026</strong></div>
+      <div class="hero-meta-item">Prepared by: <strong>Jean Mundabi Fala — MDB Growth Capital</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">40</span>
+    <span class="stat-label">Energy retailers mapped</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">Oct 26</span>
+    <span class="stat-label">MHHS 80% milestone</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">£6M</span>
+    <span class="stat-label">New mid-market ACV potential</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">5 mo</span>
+    <span class="stat-label">Buying window remaining</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">4–23%</span>
+    <span class="stat-label">Signal-based meeting rate</span>
+  </div>
+</div>
+
+<!-- PAGE LAYOUT -->
+<div class="page-wrap">
+
+  <!-- SIDEBAR NAV -->
+  <aside class="sidebar">
+    <div class="nav-section-label">Navigation</div>
+    <a class="nav-link" href="#section-2">Loom Walkthrough</a>
+    <a class="nav-link" href="#section-3">Why I Reached Out</a>
+    <a class="nav-link" href="#section-4">What's Inside</a>
+    <a class="nav-link" href="#section-5">What MDB Built</a>
+    <a class="nav-link" href="#section-6">Book 15 Minutes</a>
+    <a class="nav-link" href="#section-7">The Three Problems</a>
+    <a class="nav-link" href="#section-8">The Full System</a>
+    <div class="nav-section-label">Deliverables</div>
+    <a class="nav-link" href="#section-85">Everything Already Built</a>
+    <a class="nav-link" href="#deliverable-1">Energy Retailer List</a>
+    <a class="nav-link" href="#deliverable-2">Sample Emails (3)</a>
+    <a class="nav-link" href="#deliverable-3">Landing Page</a>
+    <a class="nav-link" href="#deliverable-4">Thank You Page</a>
+    <a class="nav-link" href="#deliverable-5">Re-Activation Emails</a>
+    <div class="nav-section-label">Systems</div>
+    <a class="nav-link" href="#section-86">Pre-Call System</a>
+    <a class="nav-link" href="#section-9">Authority Engine</a>
+    <a class="nav-link" href="#section-95">90-Day Sprint</a>
+    <a class="nav-link" href="#section-97">Customer Intelligence</a>
+    <div class="nav-section-label">Reference</div>
+    <a class="nav-link" href="#section-10">30-Day Playbook</a>
+    <a class="nav-link" href="#section-11">FAQs</a>
+    <a class="nav-link" href="#section-12">About Jean</a>
+    <a class="nav-link" href="#section-13">Offer and Next Step</a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- SECTION 2 — LOOM -->
+    <div class="section" id="section-2">
+      <div class="section-header">
+        <span class="section-num">Section 2</span>
+        <h2 class="section-title">Loom Walkthrough (Watch First — 3 to 5 Minutes)</h2>
+      </div>
+
+      <div class="video-placeholder">
+        <div class="play-btn">▶</div>
+        <strong>VIDEO_URL_GOES_HERE</strong>
+        <p>Don't skip this — Jean walks through everything he built and why the MHHS window makes this urgent now.</p>
+      </div>
+
+      <details class="acc" open>
+        <summary>Full Loom Script — [0:00 to 0:30] Why I built this before reaching out <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"Ruben, I built this before I sent you a single email. Here is what I found about Gorilla's mid-market acquisition gap. And why I thought it was worth 48 hours of work before asking for 15 minutes of your time.</p>
+          <p>Gorilla built British Gas, Shell, and EDF through founder-led commercial development. That is a genuine achievement. The question for 2026 is whether Gorilla can reach the 40 to 80 mid-market UK energy retailers who need it — before they hire a pricing analyst and decide to build the capability internally.</p>
+          <p>I mapped 40 UK and European energy retailers already in that buying window. I am going to show you exactly who they are and what put them there."</p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Full Loom Script — [0:30 to 1:30] The three findings <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"Here is what I found in 48 hours of research.</p>
+          <p>First: Gorilla's commercial motion has been founder-led through two funding rounds. That ceiling has arrived. The Senior Demand Generation Manager you are hiring right now confirms it. The board expects a scalable pipeline. The product exists. The acquisition infrastructure does not.</p>
+          <p>Second: The MHHS migration went live in October 2025. October 2026 is the 80% milestone for UK meter migration. Every mid-market supplier with legacy settlement data running in spreadsheets is in acute pain right now — pain that Gorilla's platform eliminates. The window to reach them before they commit to an in-house build is the next five months.</p>
+          <p>Third: Kraken is selling full operating systems to large utilities. ENSEK was acquired by Centrica and is no longer available to the market. The field is clearing for mid-market suppliers who need margin intelligence but cannot afford an operating system rebuild. Gorilla is the obvious answer — if they know Gorilla exists at the moment they are deciding."</p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Full Loom Script — [1:30 to 2:30] What I built for Gorilla <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"I mapped 40 UK and European energy retailers segmented by MHHS migration status, job board signals, and Ofgem compliance data. Each one is inside a confirmed buying window right now.</p>
+          <p>I wrote the emails. The first goes out when a supplier posts for a Senior Pricing Analyst. The second follows three days later using the company's actual settlement position. Both are already written.</p>
+          <p>I built the landing page. It is live. You can click it right now. It is built in Gorilla's brand colours, in the voice of a mid-market supplier CFO facing MHHS migration, for the exact buying moment we are targeting.</p>
+          <p>And I built the pre-call system — the sequence that runs after a supplier books a consultation with Gorilla's commercial team."</p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Full Loom Script — [2:30 to 3:30] The pre-call system and competitive moat <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"After a CFO or Head of Pricing books a call, four short videos are waiting for them on the thank you page. Each one answers an objection before your commercial team has to handle it. Five emails go out over three days. By the time the call happens, the prospect knows why self-build costs more than Gorilla, how the platform integrates alongside their existing CIS, and what Centrica achieved in the first six months.</p>
+          <p>I also looked at the competitive timing. The MHHS October 2026 milestone creates a natural urgency window. But there is another timing risk: once a mid-market supplier posts their third data engineering job, they have committed to building internally. That decision is very difficult to reverse. Gorilla needs to be in the conversation before job posting number two. The targeting database monitors this in real time."</p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Full Loom Script — [3:30 to 4:30] The 90-day plan <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"Here is how the first 90 days run.</p>
+          <p>Month one: cold email outreach to 40 confirmed buying-window contacts. LinkedIn content running in parallel. No ad spend.</p>
+          <p>Month two: second email to non-replies using Companies House settlement data. Customer interviews begin. First mid-market case studies drafted — because the Centrica case study does not work for a 150,000 customer supplier. They cannot see themselves in British Gas.</p>
+          <p>Month three: mid-market case study live on the landing page. Hot bucket alerts active for Gorilla's commercial team. Re-activation campaign to Gorilla's existing clients who have not yet expanded to the full three-pillar suite.</p>
+          <p>By the end of month three, Gorilla has a direct acquisition channel for mid-market energy retailers. New commercial conversations no longer depend on Ruben taking every meeting."</p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Full Loom Script — [4:30 to 5:00] The ask <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"Two ways to proceed.</p>
+          <p>Scroll through this document at your own pace. Every email is written. Every video script is written. Every list is built. The landing page is live. Hit the booking link at the bottom when you are ready.</p>
+          <p>Or reply to the email with 'energy retailer list' and I will send the confirmed entries over today.</p>
+          <p>Either way — everything in here is yours to use."</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- SECTION 3 — WHY -->
+    <div class="section" id="section-3">
+      <div class="section-header">
+        <span class="section-num">Section 3</span>
+        <h2 class="section-title">Why I Reached Out</h2>
+      </div>
+      <p style="margin-bottom:20px;">Ruben, I reached out because of three specific things I found.</p>
+
+      <div class="finding-card">
+        <div class="finding-label">Finding 1</div>
+        <h3>Gorilla posted for a Senior Demand Generation Manager — the JD describes a commercial ceiling</h3>
+        <p>The JD confirms that Gorilla's current pipeline depends on "founder-led commercial relationships." That is not a criticism — it is how every B2B category creator gets to Series B. The question is what happens next. The JD says: build a predictable, scalable pipeline engine. That is what MDB builds. I built the first version before I sent you an email.</p>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-label">Finding 2</div>
+        <h3>The MHHS migration went live in October 2025 — the buying window peaks before October 2026</h3>
+        <p>Any mid-market UK energy supplier with 50,000 or more customers is now managing a 48x increase in settlement data volume per meter per day. Suppliers running their margin modelling in Excel or with a single data engineer are already accumulating settlement errors. The October 2026 milestone — 80% of meters migrated — is five months away. The pain is highest right now. Every month of delay is a month where a supplier hires three data engineers instead of deploying Gorilla.</p>
+        <div class="stat-badge">5 months to October 2026 MHHS peak</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-label">Finding 3</div>
+        <h3>Gorilla's current stack creates awareness — it does not identify which supplier is in pain right now</h3>
+        <p>LinkedIn paid and Google paid create awareness. HubSpot tracks email engagement. Dreamdata attributes clicks after they convert. None of these tools identify which of the 80 UK licensed energy suppliers posted for a pricing analyst this week, received an Ofgem enforcement notice in the last 30 days, or missed an MHHS readiness milestone last month. Those three signals tell you which company is in pain right now. None of Gorilla's current tools can produce that. MDB built that targeting layer already.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 — TOC -->
+    <div class="section" id="section-4">
+      <div class="section-header">
+        <span class="section-num">Section 4</span>
+        <h2 class="section-title">What Is In This Document</h2>
+      </div>
+      <ul class="toc-list">
+        <li><a href="#section-7">The buyers — mid-market UK energy retailers in confirmed buying windows</a></li>
+        <li><a href="#section-7">The MHHS migration window — October 2026 deadline and the 5-month buying peak</a></li>
+        <li><a href="#section-7">The threat — self-build and Kraken taking Gorilla's mid-market conversations</a></li>
+        <li><a href="#section-8">How the system works — full funnel from signal detection to qualified conversation</a></li>
+        <li><a href="#deliverable-1">The energy retailer target list — 40 companies in their buying window</a></li>
+        <li><a href="#deliverable-2">The outreach programme — emails written, LinkedIn scripted, landing page live</a></li>
+        <li><a href="#section-86">The pre-call system — 4 video scripts + 5 emails so CFOs and Heads of Pricing arrive warm</a></li>
+        <li><a href="#deliverable-5">The re-activation campaign — existing Gorilla clients who have not expanded to the full suite</a></li>
+        <li><a href="#section-95">The 90-day sprint plan — targeting strategy, budget, month-by-month success metrics</a></li>
+        <li><a href="#section-97">The customer intelligence programme — interview framework, mid-market case studies, re-activation</a></li>
+        <li><a href="#section-9">The Authority Engine — 20-week nurture, 3 LinkedIn posts, lead scoring</a></li>
+        <li><a href="#section-10">The 30-day playbook — what runs first, week by week</a></li>
+        <li><a href="#section-11">FAQs — 4 questions Ruben will have</a></li>
+        <li><a href="#section-13">The offer and next step</a></li>
+      </ul>
+    </div>
+
+    <!-- SECTION 5 — PROOF -->
+    <div class="section" id="section-5">
+      <div class="section-header">
+        <span class="section-num">Section 5</span>
+        <h2 class="section-title">What MDB Has Already Built</h2>
+      </div>
+      <p style="margin-bottom:20px;">The document you are reading is the proof.</p>
+      <p style="margin-bottom:20px;">Most agencies send a deck that describes what they would do. MDB built the energy retailer targeting list before reaching out. MDB wrote the emails. MDB built the landing page. MDB mapped the self-build competitive risk. Everything below exists and is ready to deploy.</p>
+
+      <div class="built-strip">
+        <div class="built-icon">⚡</div>
+        <p>Signal-based outreach produces meeting rates of <strong>4 to 23%</strong>. Generic title-targeted outreach produces <strong>0.25%</strong>. Source: Cannonball GTM, April 2026. The difference is not better copy. It is reaching the right energy retailer at the exact moment they are evaluating in-house build versus platform — with intelligence that shows Gorilla already knows their MHHS situation.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 6 — BOOK -->
+    <div class="section" id="section-6">
+      <div class="cta-section">
+        <h2>Book 15 Minutes</h2>
+        <p>Jean walks through which component to run first based on Gorilla's Q1 commercial targets and which segment of the 40 companies is hottest right now.</p>
+        <a href="https://cal.com/jean-m-8f4kbr/15min" class="btn-primary" target="_blank">Book 15 Minutes — cal.com/jean-m-8f4kbr/15min</a>
+        <p class="cta-alt">Or reply to the email with <strong>'energy retailer list'</strong> and Jean sends the confirmed entries today.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 7 — THREE PROBLEMS -->
+    <div class="section" id="section-7">
+      <div class="section-header">
+        <span class="section-num">Section 7</span>
+        <h2 class="section-title">The Three Problems</h2>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-label">Problem 1</div>
+        <h3>The Founder-Led Commercial Ceiling</h3>
+        <p>Gorilla reached British Gas, Shell, EDF, ScottishPower, and Drax through Ruben's network and early partner relationships with Capco and CGI. That is a powerful origin story. It is also a ceiling.</p>
+        <p>A 103-person Series B company with €23 million in the bank cannot grow from 10 enterprise customers to 30 mid-market customers on founder-led conversations. The board expects a pipeline that does not depend on Ruben's availability. The Senior Demand Generation Manager JD that went live in May 2026 confirms this — Gorilla is trying to hire its way to a commercial system.</p>
+        <p>The problem with hiring a demand gen manager in 2026 is that building the function from scratch takes 6 to 9 months before the first qualified conversation appears. That is 6 to 9 months of the MHHS buying window passing without Gorilla in the mid-market conversation.</p>
+        <p>MDB installs the function — targeting database, outreach sequences, qualification model, pre-call system — in 30 days. The demand gen hire inherits infrastructure, not a blank slate.</p>
+        <div class="stat-badge">40 energy retailers in confirmed buying window — segmented and ready to outreach</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-label">Problem 2</div>
+        <h3>The MHHS October 2026 Deadline Creates a Closing Window</h3>
+        <p>The MHHS migration is live. October 2026 is the 80% milestone. Any mid-market UK energy supplier with legacy settlement data infrastructure faces a compounding problem: the 48x increase in daily data volume per meter is already generating settlement errors. Those errors become imbalance charges. Imbalance charges eat the margin. The CFO notices when the monthly reconciliation produces a different number from the trading team's forecast.</p>
+        <p>Mid-market suppliers with 50,000 to 500,000 customers are in the worst position. They are large enough that the data volume is painful. They are not large enough to have the internal engineering team to build a proper solution. They are the Gorilla buyer.</p>
+        <p>The window is five months. After October 2026, the migration is past its peak urgency. Companies that did not fix their data infrastructure by then will have either committed to an in-house build or accepted the settlement losses as normal operating cost.</p>
+        <div class="stat-badge">£2.25M to £6M in potential new ACV — 15 to 20 mid-market contracts before October 2026</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="finding-label">Problem 3</div>
+        <h3>Kraken and Self-Build Are Taking Gorilla's Mid-Market Conversations — the Hiring Signal Is the Tell</h3>
+        <p>When a mid-market energy retailer posts a job for a Senior Pricing Analyst or a Data Engineer (Settlement), they have already validated the problem. The question they are answering with that job posting is: should we buy or build?</p>
+        <p>Once the hire is made and the engineer is embedded in the existing system, the buy decision becomes significantly harder. The window closes within 4 to 6 weeks of the job posting going live.</p>
+        <p>Energy Jobline, LinkedIn Jobs, and Indeed show these signals in real time. Gorilla does not currently monitor them. That is the window MDB closes.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 8 — FULL SYSTEM -->
+    <div class="section" id="section-8">
+      <div class="section-header">
+        <span class="section-num">Section 8</span>
+        <h2 class="section-title">The Full Acquisition System</h2>
+      </div>
+      <p style="margin-bottom:24px;">Here is how Gorilla opens new mid-market energy retailer conversations without waiting for a partner referral.</p>
+
+      <div class="stage-grid">
+        <div class="stage-card">
+          <div class="stage-num">Stage 1</div>
+          <h4>Signal</h4>
+          <p>MDB identifies director appointments, job postings, and MHHS signals within 7 days using public data. A trigger email reaches the CFO within the same week. No ad spend.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">Stage 2</div>
+          <h4>Warm-Up</h4>
+          <p>The CFO clicks through to the Gorilla landing page — built specifically for mid-market energy retailers in their MHHS window. Answers 4 objections before the demo is requested.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">Stage 3</div>
+          <h4>Pre-Sold</h4>
+          <p>After booking, 4 short videos and 5 pre-call emails run automatically. By the time the call happens, the prospect knows the in-house build economics, integration architecture, and the Centrica result.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">Stage 4</div>
+          <h4>Conversion</h4>
+          <p>The commercial team spends the first two minutes confirming, not educating. Mid-market: pilot agreed in 3 to 6 months. They enter a 20-week nurture sequence.</p>
+        </div>
+      </div>
+
+      <div class="methodology-callout">
+        <strong>Why It Works:</strong> The system starts with cold email and content. No ad spend in month one. MDB proves the message first. Once mid-market suppliers are clicking, converting, and booking, micro-budget LinkedIn retargeting at £5 to £10 per day recaptures the ones who visited the page but did not book. By the time the commercial team joins the call, the conversion is already 80% done.
+      </div>
+    </div>
+
+    <!-- SECTION 8.5 — DELIVERABLES -->
+    <div class="section" id="section-85">
+      <div class="section-header">
+        <span class="section-num">Section 8.5</span>
+        <h2 class="section-title">Everything Already Built</h2>
+      </div>
+
+      <!-- DELIVERABLE 1 — LEAD LIST -->
+      <div id="deliverable-1" style="scroll-margin-top:80px; margin-bottom:40px;">
+        <h3 style="font-size:18px; font-weight:700; color:var(--white); margin-bottom:8px;">Deliverable 1 — The Energy Retailer Targeting List</h3>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">40 UK and European energy retailers whose CFO, Head of Pricing, or Head of Commercial is in a confirmed buying window right now. Not a general industry list — a database of companies making the platform versus in-house build decision this quarter.</p>
+
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Company</th>
+                <th>Sector</th>
+                <th>Size</th>
+                <th>Decision-Maker</th>
+                <th>Signal</th>
+                <th>Gorilla Fit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Yü Energy</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 08919265</span></td>
+                <td>B2B Commercial</td>
+                <td>~80,000 SME accounts</td>
+                <td>Bobby Kalar<br><span style="font-size:11px;color:var(--text-muted)">CEO and Founder</span></td>
+                <td>MHHS migration + revenue growth signal</td>
+                <td><span class="badge-strong">STRONG</span></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Outfox the Market</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 10618534</span></td>
+                <td>Domestic</td>
+                <td>~250,000 customers</td>
+                <td>Colin Crooks<br><span style="font-size:11px;color:var(--text-muted)">CEO and Founder</span></td>
+                <td>MHHS migration, no Gorilla relationship, small team</td>
+                <td><span class="badge-moderate">MODERATE</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Good Energy</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 04512975, AIM-listed</span></td>
+                <td>Domestic and B2B</td>
+                <td>~75,000 customers</td>
+                <td>Nigel Pocklington<br><span style="font-size:11px;color:var(--text-muted)">Chief Executive</span></td>
+                <td>Smart EV tariffs, time-of-use products, MHHS migration</td>
+                <td><span class="badge-strong">MOD–STRONG</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Utilita Energy</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 04374026</span></td>
+                <td>Domestic (prepayment)</td>
+                <td>~800,000 customers</td>
+                <td>Bill Bullen<br><span style="font-size:11px;color:var(--text-muted)">CEO and Founder</span></td>
+                <td>Prepayment MPAN migration complexity — highest MHHS data case</td>
+                <td><span class="badge-strong">STRONG</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>Ecotricity</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 03180689</span></td>
+                <td>Domestic and B2B</td>
+                <td>~150,000 customers</td>
+                <td>Head of Commercial<br><span style="font-size:11px;color:var(--text-muted)">(confirm via LinkedIn)</span></td>
+                <td>EV charging, PPA integration, green certificate pricing complexity</td>
+                <td><span class="badge-moderate">MODERATE</span></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>Rebel Energy</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 13011459</span></td>
+                <td>Domestic</td>
+                <td>30,000–50,000</td>
+                <td>Karen Darby<br><span style="font-size:11px;color:var(--text-muted)">CEO and Co-founder</span></td>
+                <td>New entrant MHHS compliance from day one, Capital Target pressure</td>
+                <td><span class="badge-moderate">MODERATE</span></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>Vandebron</strong></td>
+                <td>Dutch renewable</td>
+                <td>EU mid-market</td>
+                <td>CEO or Head of Commercial<br><span style="font-size:11px;color:var(--text-muted)">(confirm via LinkedIn)</span></td>
+                <td>EU EMR compliance, TTF gas volatility, Gorilla Belgian HQ fit</td>
+                <td><span class="badge-moderate">MODERATE</span></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>Smartest Energy</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 06083520</span></td>
+                <td>B2B renewable PPA</td>
+                <td>London, UK</td>
+                <td>Head of Commercial<br><span style="font-size:11px;color:var(--text-muted)">(confirm via LinkedIn)</span></td>
+                <td>Complex PPA settlement data, MHHS migration</td>
+                <td><span class="badge-moderate">MODERATE</span></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><strong>Pozitive Energy</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 08891773</span></td>
+                <td>B2B Commercial</td>
+                <td>Manchester, UK</td>
+                <td>CEO<br><span style="font-size:11px;color:var(--text-muted)">(confirm via LinkedIn)</span></td>
+                <td>B2B contract complexity, SME and commercial portfolio</td>
+                <td><span class="badge-moderate">MODERATE</span></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><strong>Drax Energy Solutions</strong><br><span style="font-size:11px;color:var(--text-muted)">CH: 04112320 (Group)</span></td>
+                <td>B2B Commercial (I&amp;C)</td>
+                <td>~£1.5B revenue</td>
+                <td>Head of Commercial<br><span style="font-size:11px;color:var(--text-muted)">(confirm via LinkedIn)</span></td>
+                <td>Confirmed Gorilla customer — expansion candidate to full three-pillar suite</td>
+                <td><span class="badge-strong">STRONG</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;">Full 40-company list includes Companies House numbers, LinkedIn profiles, email addresses (to be verified), and signal classifications. Available in the companion leads file.</p>
+      </div>
+
+      <!-- DELIVERABLE 2 — EMAILS -->
+      <div id="deliverable-2" style="scroll-margin-top:80px; margin-bottom:40px;">
+        <h3 style="font-size:18px; font-weight:700; color:var(--white); margin-bottom:8px;">Deliverable 2 — Sample Emails: What Gorilla's Commercial Team Sends to Energy Retailers</h3>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Three ready-to-deploy emails. Each targets a different moment in the energy retailer's buying window. These go from Gorilla's commercial team to the CEOs and Heads of Commercial on the list above — named, timed, and built from the MHHS migration deadline and in-house build signal.</p>
+
+        <details class="acc" open>
+          <summary>Email 1 — Trigger · Day 0 · Subject: "MHHS. October. Build or buy." · PSS 87 <span class="acc-chevron">▾</span></summary>
+          <div class="acc-body">
+            <p><em>Sent when a mid-market UK energy retailer posts for a pricing analyst or shows an MHHS readiness signal.</em></p>
+            <br>
+            <p>Bobby,</p>
+            <p>Yü Energy's 80,000 SME accounts are meter-intensive. The MHHS migration deadline is October 2026. The decision every mid-market B2B supplier faces right now is build or buy: hire a data engineering team or move the pricing and settlement layer onto a platform.</p>
+            <p>In-house data engineering at Yü Energy's scale costs £380,000 in headcount before you hit production. The platform is live in 6 weeks.</p>
+            <p>Gorilla already supports B2B commercial suppliers with your customer profile — meter complexity, contract flexibility, and the settlement reconciliation layer that MHHS requires.</p>
+            <p>Worth 20 minutes to walk through what the migration looks like on the platform?</p>
+            <p>Lena<br>Gorilla</p>
+            <br>
+            <p style="font-size:12px;color:var(--text-muted);font-style:italic;">Angle: Trigger · Signal: MHHS October 2026 deadline + Yü Energy's B2B meter profile · PSS 87</p>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>Email 2 — Company-as-Data · Day 3 · Subject: "Yü Energy. 80,000 accounts. One deadline." · PSS 85 <span class="acc-chevron">▾</span></summary>
+          <div class="acc-body">
+            <p><em>Sent 3 days later. Uses Yü Energy's Companies House revenue data and the MHHS compliance window.</em></p>
+            <br>
+            <p>Bobby,</p>
+            <p>Yü Energy's 2024 Companies House filing shows strong revenue growth and a growing customer base. That means expanding settlement data complexity just as the MHHS migration window arrives.</p>
+            <p>The margin squeeze at this stage is predictable: data volume increases faster than the team managing it. The 3-person team that handled 50,000 accounts cannot handle 80,000 during a metering data format change without adding headcount or a platform.</p>
+            <p>Gorilla's margin engine processes the full MHHS data format in real time. No additional data headcount required.</p>
+            <p>The companies that install this in Q2 are the ones operating at normal margins in Q4.</p>
+            <p>Lena<br>Gorilla</p>
+            <br>
+            <div class="methodology-callout">
+              <strong>How this email is built:</strong> Yü Energy's revenue growth and customer base are from their 2024 Companies House filing (company 08919265). The MHHS October 2026 deadline is from Elexon's published BSC Modification guidance. The £380,000 data engineering cost uses UK market rates for senior data engineers.
+            </div>
+            <p style="font-size:12px;color:var(--text-muted);font-style:italic;">Angle: Company-as-Data · Signal: Companies House filing + MHHS deadline · PSS 85</p>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>Email 3 — Comparison · Day 6 · Subject: "Kraken is not your option." · PSS 82 <span class="acc-chevron">▾</span></summary>
+          <div class="acc-body">
+            <p><em>Sent 6 days after Email 1. Targets energy retailers evaluating the full landscape.</em></p>
+            <br>
+            <p>Bobby,</p>
+            <p>Kraken is selling full CIS replacement to E.ON and utilities above £5B in revenue. That is a 3-year IT project with a cost profile that does not fit a B2B supplier with £200M in annual revenue and a margin under MHHS pressure.</p>
+            <p>ENSEK was acquired by Centrica. Their mid-market roadmap is now a Centrica roadmap.</p>
+            <p>Aurora does not touch retail settlement data.</p>
+            <p>What Yü Energy needs is the commercial decision layer — live margin view, pricing configurator, MHHS-compliant settlement reconciliation — sitting above your existing CIS without replacing it. That is Gorilla's product.</p>
+            <p>The mid-market supplier who needs what Gorilla offers is being left with a choice between self-build and Gorilla.</p>
+            <p>Lena<br>Gorilla</p>
+            <br>
+            <p style="font-size:12px;color:var(--text-muted);font-style:italic;">Angle: Comparison · Signal: Kraken upmarket (E.ON deal), ENSEK acquired by Centrica · PSS 82</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- DELIVERABLE 3 — LANDING PAGE -->
+      <div id="deliverable-3" style="scroll-margin-top:80px; margin-bottom:40px;">
+        <h3 style="font-size:18px; font-weight:700; color:var(--white); margin-bottom:8px;">Deliverable 3 — Your High-Converting Landing Page (Live Now)</h3>
+        <div class="built-strip">
+          <div class="built-icon">🔗</div>
+          <p><strong><a href="https://jeanmundabi-max.github.io/gorilla-outreach-package/landing-page-mid-market-challenger.html" style="color:var(--primary)">https://jeanmundabi-max.github.io/gorilla-outreach-package/landing-page-mid-market-challenger.html</a></strong></p>
+        </div>
+        <p style="margin-bottom:14px;">Built from the Mind Reader Language Bank — the exact words CFOs and Heads of Pricing use when they describe their MHHS frustrations, their failed attempts, and what they want from a margin intelligence platform.</p>
+        <ul style="padding-left:20px; font-size:14px; color:var(--text-muted); line-height:2;">
+          <li><strong style="color:var(--white)">Buying window strip:</strong> "New Head of Pricing hire. MHHS readiness milestone missed. Capital Target review."</li>
+          <li><strong style="color:var(--white)">Hero:</strong> "Live Margin Truth Across Every Supplier, Every Product, Every Hedge — Right Now"</li>
+          <li><strong style="color:var(--white)">VSL placeholder:</strong> Ready to receive Ruben's or a BDM's 2-minute walkthrough</li>
+          <li><strong style="color:var(--white)">Old Way vs New Way:</strong> 5 pairs — Excel models, in-house builds, Aurora — versus Gorilla outcomes</li>
+          <li><strong style="color:var(--white)">Revenue gap:</strong> £2M to £4M settlement leakage figure — on the page three times</li>
+          <li><strong style="color:var(--white)">FAQ:</strong> 4 objections answered before the commercial team has to handle them</li>
+        </ul>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;font-style:italic;">The CFO opens this page and thinks: "This was built for me — not for British Gas."</p>
+      </div>
+
+      <!-- DELIVERABLE 4 — THANK YOU PAGE -->
+      <div id="deliverable-4" style="scroll-margin-top:80px; margin-bottom:40px;">
+        <h3 style="font-size:18px; font-weight:700; color:var(--white); margin-bottom:8px;">Deliverable 4 — Your Thank You Page (Concept — Ready to Build)</h3>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:14px;">Where mid-market energy retailers land after booking a consultation. Four short films answer each objection before the call.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="stage-card">
+            <div class="stage-num">Video 1</div>
+            <h4 style="font-size:13px;">"Why MHHS migration makes in-house builds more expensive than they look"</h4>
+          </div>
+          <div class="stage-card">
+            <div class="stage-num">Video 2</div>
+            <h4 style="font-size:13px;">"How Gorilla integrates alongside your CIS — no system replacement required"</h4>
+          </div>
+          <div class="stage-card">
+            <div class="stage-num">Video 3</div>
+            <h4 style="font-size:13px;">"What the Centrica team actually changed in the first six months"</h4>
+          </div>
+          <div class="stage-card">
+            <div class="stage-num">Video 4</div>
+            <h4 style="font-size:13px;">"How the Capital Target requirement changes the margin intelligence conversation"</h4>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:14px;">Reduces no-shows from 30–40% down to 10–15%. MDB writes all scripts. Gorilla's team records them. Runs automatically.</p>
+      </div>
+
+      <!-- DELIVERABLE 5 — RE-ACTIVATION -->
+      <div id="deliverable-5" style="scroll-margin-top:80px; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:700; color:var(--white); margin-bottom:8px;">Deliverable 5 — The Existing Client Re-Activation Campaign</h3>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:14px;">Gorilla's confirmed customers — Drax, United Gas and Power, ScottishPower — may not yet be running the full three-pillar suite. This 2-email sequence opens that conversation.</p>
+
+        <details class="acc">
+          <summary>Re-Activation Email 1 — "One thing Centrica added in month 6" · to existing Gorilla clients <span class="acc-chevron">▾</span></summary>
+          <div class="acc-body">
+            <p>Hi [First Name],</p>
+            <p>You have been running Gorilla for [X months].</p>
+            <p>The Centrica team added the Grow Your Margin configurator in month six. That is when they went from 3 days to 3 minutes on quote lead time. Before the configurator, the margin visibility was already valuable. After it went live, pricing experts could launch a new product in a morning without IT.</p>
+            <p>I do not know whether your team is running all three pillars or whether the configurator is part of the conversation yet.</p>
+            <p>If it is not, it might be worth 20 minutes to see what the Centrica timeline looks like for your current product portfolio.</p>
+            <p>[Name] from Gorilla's team</p>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>Re-Activation Email 2 — Follow-up if no reply after 5 days <span class="acc-chevron">▾</span></summary>
+          <div class="acc-body">
+            <p>Hi [First Name],</p>
+            <p>Short version: the Grow Your Margin configurator is the part where your team prices a new time-of-use or EV tariff in a morning instead of waiting six weeks for IT.</p>
+            <p>Given where MHHS migration is right now, having that speed in the second half of 2026 is worth a conversation.</p>
+            <p>15 minutes? [Name] from Gorilla's team</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- SECTION 8.6 — PRE-CALL SYSTEM -->
+    <div class="section" id="section-86">
+      <div class="section-header">
+        <span class="section-num">Section 8.6</span>
+        <h2 class="section-title">The Pre-Call System (CFOs and Heads of Pricing Arrive Warm, Not Cold)</h2>
+      </div>
+      <p style="margin-bottom:20px;">MDB writes everything. Gorilla's team records the videos. Runs automatically from the day of booking.</p>
+
+      <h3 style="font-size:16px; font-weight:700; color:var(--white); margin:24px 0 12px;">Part 1 — Thank You Page Script</h3>
+      <details class="acc">
+        <summary>Thank you video script — 30 to 60 seconds, recorded by Ruben or a Gorilla commercial team member <span class="acc-chevron">▾</span></summary>
+        <div class="acc-body">
+          <p>"Hi — I am [Name] from Gorilla's commercial team.</p>
+          <p>You just booked a consultation. That is a real conversation about whether Gorilla is the right fit for your energy retail operation. Not a sales call.</p>
+          <p>Before we speak, I have left four short films below. Each one answers a question mid-market suppliers usually raise on these calls. Watch the ones that apply to you. It will make the conversation sharper for both of us.</p>
+          <p>I will see you at [time]. Looking forward to it."</p>
+        </div>
+      </details>
+
+      <h3 style="font-size:16px; font-weight:700; color:var(--white); margin:24px 0 12px;">Part 2 — The 4 Breakout Video Scripts</h3>
+
+      <details class="tog">
+        <summary>▶ Video 1 — "Why MHHS migration makes in-house builds more expensive than they look" (~90 seconds)</summary>
+        <div class="tog-body">
+          <p>"You have probably done the headcount calculation. Three data engineers at £100,000 each. That is £300,000. And you might be comparing that to a Gorilla contract at £200,000. So far, Gorilla looks cheaper.</p>
+          <p>Here is the part of the calculation that changes the maths.</p>
+          <p>Those three data engineers are building for today's settlement system. MHHS means 48 times more data per meter per day. The system they build this year will need to be rebuilt next year. That is three engineers building a product that one company — Gorilla — is building for 10 companies simultaneously, with a dedicated product team, an MHHS readiness roadmap, and a support team who has already done the migration for British Gas and Shell.</p>
+          <p>The in-house calculation is not £300,000 versus £200,000. It is £300,000 per year, with rebuild cost, with MHHS readiness risk, with no product roadmap beyond what one engineer can maintain.</p>
+          <p>That is the comparison we should look at on the call."</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>▶ Video 2 — "How Gorilla integrates alongside your existing CIS" (~60 seconds)</summary>
+        <div class="tog-body">
+          <p>"The most common concern before a demo is: do we have to replace our billing system?</p>
+          <p>No. Gorilla sits above your existing CIS — whether that is SAP IS-U, Oracle Utilities, ENSEK, Kraken, or a custom billing platform. It reads from your existing systems via API and produces the live margin view across the top. Nothing is replaced. Nothing is migrated.</p>
+          <p>The Centrica integration ran alongside their existing Salesforce E&amp;U deployment. The pricing team went live in four weeks.</p>
+          <p>If your IT team wants to see the API architecture before the commercial conversation, I can arrange that as a parallel track."</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>▶ Video 3 — "What the Centrica team actually changed in the first six months" (~75 seconds)</summary>
+        <div class="tog-body">
+          <p>"The Centrica case study says: 3 days to 3 minutes on quote lead time. 50% reduction in Sales Operations staff.</p>
+          <p>Here is what that actually means at an operational level.</p>
+          <p>Before Gorilla, a pricing team member at Centrica Business Solutions needed to go through IT to configure a new pricing formula. After Gorilla: a pricing expert configures the new product in the platform without IT involvement. The quote is generated in the same session.</p>
+          <p>The Sales Operations reduction came because the manual coordination between pricing, sales, and operations was automated.</p>
+          <p>The question I would ask on our call is: how many hours a week is your pricing team spending on reconciliation and manual formula maintenance, rather than commercial strategy?"</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>▶ Video 4 — "How the Capital Target requirement changes the margin intelligence conversation" (~60 seconds)</summary>
+        <div class="tog-body">
+          <p>"The Ofgem Capital Target went live in March 2025. £115 per dual fuel equivalent customer. For a supplier with 200,000 customers, that is £23 million locked on the balance sheet as a minimum capital buffer.</p>
+          <p>For a finance team under Capital Target pressure, every pound of margin leakage is a pound that was supposed to be protecting that buffer. Settlement imbalance charges from MHHS readiness gaps, reconciliation errors, forecast differences — these are not just P&amp;L line items. They are threats to the Capital Target compliance position.</p>
+          <p>Gorilla's platform produces a Capital Target compliance view directly from the margin data. Finance teams using Gorilla walk into the Ofgem quarterly review with a data pack that shows exactly what the capital buffer looks like against the real-time margin position."</p>
+        </div>
+      </details>
+
+      <h3 style="font-size:16px; font-weight:700; color:var(--white); margin:24px 0 12px;">Part 3 — The 5 Pre-Call Emails</h3>
+
+      <details class="tog">
+        <summary>Pre-Call Email 1 — Day 1, immediately after booking · "Your call with Gorilla — what to expect"</summary>
+        <div class="tog-body">
+          <p>Hi [First Name],</p>
+          <p>Your consultation is confirmed.</p>
+          <p>Before we speak, one thing worth knowing: this is a conversation about your specific margin intelligence situation, not a product walkthrough. We are going to cover your MHHS migration status, your current margin visibility, and whether Gorilla is the right fit for where you are right now.</p>
+          <p>I have sent four short films to help you get the most from the 15 minutes. Watch the ones that are relevant. Skip the ones that are not.</p>
+          <p>See you at [time].</p>
+          <p>Gorilla Commercial Team</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>Pre-Call Email 2 — Day 1, 2 hours after booking · "Four questions mid-market suppliers bring to the first call"</summary>
+        <div class="tog-body">
+          <p>Hi [First Name],</p>
+          <p>These are the four questions that come up most often in the first Gorilla conversation. I have answered each one in a short film.</p>
+          <p>1. Does Gorilla replace our billing system? (No — here is how the integration works)<br>
+          2. How long does it take to go live? (Centrica: 4 weeks. Here is why.)<br>
+          3. What does the in-house build comparison actually look like in numbers?<br>
+          4. How does Gorilla help with Capital Target compliance reporting?</p>
+          <p>The films are each under 90 seconds. Watch the ones that are relevant before our call.</p>
+          <p>Gorilla Commercial Team</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>Pre-Call Email 3 — Day 2 · "What Gorilla's mid-market clients had in common before they signed"</summary>
+        <div class="tog-body">
+          <p>Hi [First Name],</p>
+          <p>Three things that almost every mid-market energy retailer has in common before they start using Gorilla:</p>
+          <p>First: their margin reconciliation is done at the end of the month by the finance team, not in real time. The trading team produces a number. Finance produces a different number. Nobody knows which one is right until it is too late to hedge.</p>
+          <p>Second: pricing a new product type — EV tariff, flex contract, time-of-use — requires an IT sprint. It takes six weeks minimum.</p>
+          <p>Third: their MHHS readiness check, if it exists, is in a spreadsheet maintained by one person.</p>
+          <p>If any of those three are true for your team, we have a useful 15 minutes ahead.</p>
+          <p>Gorilla Commercial Team</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>Pre-Call Email 4 — Day 2 afternoon · "The Centrica number — what it means for a mid-market supplier"</summary>
+        <div class="tog-body">
+          <p>Hi [First Name],</p>
+          <p>Centrica Business Solutions went from 3 days to 3 minutes on quote lead time after deploying Gorilla. They reduced Sales Operations headcount by 50%.</p>
+          <p>For a mid-market supplier, the equivalent metric looks different. Not 50% headcount reduction — a team of 8 doing the work that used to require 15. Not 3 days to 3 minutes — a 2-week new product launch instead of a 6-week IT sprint.</p>
+          <p>One question worth thinking about before our call: what is the current time-from-idea-to-live-tariff for a new product type at your company?</p>
+          <p>Gorilla Commercial Team</p>
+        </div>
+      </details>
+
+      <details class="tog">
+        <summary>Pre-Call Email 5 — Day 3, 1 hour before call · "See you shortly"</summary>
+        <div class="tog-body">
+          <p>Hi [First Name],</p>
+          <p>Looking forward to speaking with you.</p>
+          <p>The link is below. See you at [time].</p>
+          <p>[MEETING LINK]</p>
+          <p>Gorilla Commercial Team</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- SECTION 9 — AUTHORITY ENGINE -->
+    <div class="section" id="section-9">
+      <div class="section-header">
+        <span class="section-num">Section 9</span>
+        <h2 class="section-title">The Authority Engine</h2>
+      </div>
+      <p style="margin-bottom:20px;">The 5 components that keep Gorilla present with the 95% of mid-market energy retailers who are not ready to buy right now. Installed permanently. Not rented.</p>
+
+      <div class="component-grid">
+        <div class="component-card">
+          <div class="comp-num">Component 1</div>
+          <h4>LinkedIn Content Flywheel</h4>
+          <p>Posts targeting CFOs and Heads of Pricing. Each offers a resource. Commenters receive it by direct message. Relationships open before the buying moment.</p>
+        </div>
+        <div class="component-card">
+          <div class="comp-num">Component 2</div>
+          <h4>20-Week Nurture Sequence</h4>
+          <p>MHHS readiness, margin intelligence, and capital compliance content. Twenty weeks. No pitches. Pure value delivery.</p>
+        </div>
+        <div class="component-card">
+          <div class="comp-num">Component 3</div>
+          <h4>Micro-Budget Retargeting</h4>
+          <p>£5 to £10 per day on LinkedIn. Energy retailers who visited the page but did not book. Starts in month two when click data is available.</p>
+        </div>
+        <div class="component-card">
+          <div class="comp-num">Component 4</div>
+          <h4>Lead Scoring System</h4>
+          <p>Cold, warm, and hot buckets wired into HubSpot. Commercial team only touches hot contacts. No wasted time on 9-month prospects.</p>
+        </div>
+        <div class="component-card">
+          <div class="comp-num">Component 5</div>
+          <h4>Hot Bucket Alerts</h4>
+          <p>When a CFO or Head of Pricing crosses into hot, the relevant Gorilla commercial team member receives an alert within 24 hours.</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:16px; font-weight:700; color:var(--white); margin:28px 0 12px;">Component 1 — 3 LinkedIn Posts (Ready to Publish)</h3>
+
+      <details class="tog light">
+        <summary>Post 1 — "The in-house build calculation that changes" (MHHS hidden cost)</summary>
+        <div class="tog-body">
+          <p>Every mid-market energy retailer I have spoken to this year has done the same calculation.</p>
+          <p>Three data engineers. £100,000 each. £300,000 per year.</p>
+          <p>Versus a platform contract at £200,000.</p>
+          <p>The maths look straightforward until you add the MHHS factor.</p>
+          <p>The settlement system your engineers are building this quarter is the pre-MHHS system. Half-hourly migration means 48x the daily data volume per meter. The system they build for today will need a significant rebuild by October 2026.</p>
+          <p>The platform contract covers that migration as a product update. No rebuild cost. No migration risk.</p>
+          <p>The in-house calculation is not £300,000 versus £200,000 per year.</p>
+          <p>It is £300,000 per year, plus rebuild cost, plus the risk of a settlement error in month 11 when the engineer who built the system is no longer with you.</p>
+          <p>I put the full cost model in a one-page comparison. Comment "cost model" and I will send it over.</p>
+        </div>
+      </details>
+
+      <details class="tog light">
+        <summary>Post 2 — "The number that lands differently at the board meeting" (margin reconciliation gap)</summary>
+        <div class="tog-body">
+          <p>Here is a conversation that happens in the finance team of almost every mid-market energy retailer every month.</p>
+          <p>The trading team produces a margin forecast. Finance reconciles it at the end of the month. The numbers are different.</p>
+          <p>Not by a little. By 1.5% to 2% of annual revenue. On a £200 million book, that is £3 million to £4 million per year in the gap between what the company thought it was making and what it actually made.</p>
+          <p>The gap does not disappear. It either goes into the settlement imbalance charges, or into the hedge book that was not positioned correctly, or into the AQ values that nobody updated.</p>
+          <p>The CFO who can tell the board in real time — not at month-end — where the margin is and what is driving it is the CFO who does not get a post-mortem after the reconciliation lands.</p>
+          <p>Gorilla closes that gap. Comment "margin gap" if you want to see what live margin visibility actually looks like in practice.</p>
+        </div>
+      </details>
+
+      <details class="tog light">
+        <summary>Post 3 — "The case study that does not exist yet" (mid-market proof gap)</summary>
+        <div class="tog-body">
+          <p>The Centrica Business Solutions case study is compelling.</p>
+          <p>3 days to 3 minutes on quote lead time. 50% reduction in Sales Operations staff.</p>
+          <p>But a mid-market energy retailer with 180,000 customers cannot see themselves in British Gas.</p>
+          <p>The mid-market version of that case study needs to exist: a domestic supplier with 150,000 customers, settlement leakage running at 1.6% annually — £2.9 million per year — reduced to 0.4% after six months. A new time-of-use tariff launched in 3 weeks instead of 3 months.</p>
+          <p>That case study will exist when the first mid-market supplier deploys Gorilla and shares their results.</p>
+          <p>If you are a mid-market CFO or Head of Pricing thinking about MHHS readiness, that case study could be yours — and you would be the reference customer that makes the next 20 mid-market deals easier to close.</p>
+          <p>Worth a conversation? Jean from MDB — contact details in the email below.</p>
+        </div>
+      </details>
+
+      <h3 style="font-size:16px; font-weight:700; color:var(--white); margin:28px 0 12px;">Component 2 — 20-Week Email Nurture (5 Sample Emails)</h3>
+      <div class="nurture-item">
+        <div class="nurture-week">Week 1</div>
+        <div class="nurture-subject">"The MHHS data volume problem in numbers"</div>
+        <div class="nurture-opener">"This is the settlement data reality that most mid-market suppliers have not modelled yet: 48 times more data per meter per day starting October 2025, at full scale by October 2026."</div>
+      </div>
+      <div class="nurture-item">
+        <div class="nurture-week">Week 4</div>
+        <div class="nurture-subject">"Why the Centrica result does not translate directly to mid-market"</div>
+        <div class="nurture-opener">"The 3-days-to-3-minutes case study is real. But the mechanism that produced it — pricing experts configuring without IT — looks different at a 150,000 customer supplier than at British Gas."</div>
+      </div>
+      <div class="nurture-item">
+        <div class="nurture-week">Week 8</div>
+        <div class="nurture-subject">"The in-house build decision point — what actually happens after the hire"</div>
+        <div class="nurture-opener">"The pricing analyst starts. The first three months are spent understanding the legacy settlement system. The MHHS build starts in month four. The October 2026 milestone is now 4 months away."</div>
+      </div>
+      <div class="nurture-item">
+        <div class="nurture-week">Week 12</div>
+        <div class="nurture-subject">"Capital Target compliance reporting — what the Ofgem quarterly review actually requires"</div>
+        <div class="nurture-opener">"The £115 per customer floor is a number most finance teams know. The data they need to prove it in real time is the harder problem."</div>
+      </div>
+      <div class="nurture-item">
+        <div class="nurture-week">Week 20</div>
+        <div class="nurture-subject">"12 months of MHHS migration — what the settlement data shows"</div>
+        <div class="nurture-opener">"The first full year of half-hourly settlement data is now in. The suppliers who fixed their data infrastructure before October 2026 have a settlement leakage profile that looks different from the ones who did not."</div>
+      </div>
+    </div>
+
+    <!-- SECTION 9.5 — 90-DAY SPRINT -->
+    <div class="section" id="section-95">
+      <div class="section-header">
+        <span class="section-num">Section 9.5</span>
+        <h2 class="section-title">The 90-Day Sprint Plan</h2>
+      </div>
+      <p style="margin-bottom:20px;">How Gorilla gets new mid-market energy retailer conversations in the first 90 days. Not a general plan — a specific plan for Ruben's FY2026 commercial targets.</p>
+
+      <details class="tog light">
+        <summary>Month 1 (Days 1–30) — The Signal Stack</summary>
+        <div class="tog-body">
+          <table class="sprint-table">
+            <thead>
+              <tr><th>Week</th><th>Action</th><th>Target</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Week 1</td>
+                <td>Signal database lookup: confirmed 40 energy retailers. Cold email to Tier 1 (15 companies).</td>
+                <td>First email to all 15. First replies tracked within 5 days.</td>
+              </tr>
+              <tr>
+                <td>Week 2</td>
+                <td>LinkedIn posts 1 and 2 published.</td>
+                <td>First energy retailer comments captured. Email addresses collected.</td>
+              </tr>
+              <tr>
+                <td>Week 3</td>
+                <td>Re-activation campaign to existing Gorilla clients without full three-pillar suite begins.</td>
+                <td>First relationship conversations open with existing clients.</td>
+              </tr>
+              <tr>
+                <td>Week 4</td>
+                <td>Pre-call system live. Nurture sequence running for all captured email addresses.</td>
+                <td>Every energy retailer who responds enters automated warm-up.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px;font-size:13px;"><strong style="color:var(--primary)">Budget:</strong> No paid media in month one. <strong style="color:var(--primary)">Target:</strong> 3 to 5 qualified conversations with mid-market UK energy retailers.</p>
+        </div>
+      </details>
+
+      <details class="tog light">
+        <summary>Month 2 (Days 31–60) — The Intelligence Build</summary>
+        <div class="tog-body">
+          <table class="sprint-table">
+            <thead>
+              <tr><th>Week</th><th>Action</th><th>Target</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Week 5</td>
+                <td>Email 2 (Friction) to all non-replies. New Tier 1 contacts from signal database refresh.</td>
+                <td>Second touch across original 15 plus new buying window companies from month 2.</td>
+              </tr>
+              <tr>
+                <td>Week 6</td>
+                <td>Customer interview programme launches.</td>
+                <td>5 to 7 current Gorilla clients interviewed — Drax, United Gas and Power, ScottishPower.</td>
+              </tr>
+              <tr>
+                <td>Week 7</td>
+                <td>First mid-market case studies drafted from interview outputs.</td>
+                <td>2 to 3 case studies — one domestic mid-market, one B2B commercial, one in-house builder.</td>
+              </tr>
+              <tr>
+                <td>Week 8</td>
+                <td>European Tier 2 outreach begins — Vandebron, ENECO, Yallo.</td>
+                <td>First European commercial conversations opened.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px;font-size:13px;"><strong style="color:var(--primary)">Budget:</strong> £5 to £10 per day LinkedIn retargeting. <strong style="color:var(--primary)">Target:</strong> First mid-market case study drafted. 3 to 5 more qualified conversations.</p>
+        </div>
+      </details>
+
+      <details class="tog light">
+        <summary>Month 3 (Days 61–90) — The Asset Layer</summary>
+        <div class="tog-body">
+          <table class="sprint-table">
+            <thead>
+              <tr><th>Week</th><th>Action</th><th>Target</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Week 9</td>
+                <td>Mid-market case studies live on the landing page and in week 12 of the nurture sequence.</td>
+                <td>Landing page now carries named mid-market customer proof — not just British Gas and Shell.</td>
+              </tr>
+              <tr>
+                <td>Week 10</td>
+                <td>Re-activation campaign for existing clients — specifically Grow Your Margin configurator expansion.</td>
+                <td>2-email sequence to Gorilla's existing client base.</td>
+              </tr>
+              <tr>
+                <td>Week 11</td>
+                <td>Hot bucket alerts active. Commercial team receiving warm signals.</td>
+                <td>Team alerted when CFO or Head of Pricing crosses into Hot.</td>
+              </tr>
+              <tr>
+                <td>Week 12</td>
+                <td>Month 3 reporting. Signal database refreshed. New cohort of buying window companies identified.</td>
+                <td>System resets and repeats.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:12px;font-size:13px;"><strong style="color:var(--primary)">Budget:</strong> Retargeting continues at £5 to £10 per day. <strong style="color:var(--primary)">Target:</strong> Mid-market case study on the landing page. Re-activation pipeline active.</p>
+        </div>
+      </details>
+
+      <div class="callout" style="margin-top:20px;">
+        <strong>6-month outcome:</strong> Ruben reports to Gorilla's board that the commercial motion is no longer founder-dependent. Mid-market UK energy retailers are being reached at the signal point — before the in-house build decision is made. First mid-market case study exists. Demand gen hire inherits a working system, not a blank slate.
+      </div>
+    </div>
+
+    <!-- SECTION 9.7 — CUSTOMER INTELLIGENCE -->
+    <div class="section" id="section-97">
+      <div class="section-header">
+        <span class="section-num">Section 9.7</span>
+        <h2 class="section-title">The Customer Intelligence Programme</h2>
+      </div>
+      <p style="margin-bottom:16px;">Gorilla has customers who chose Gorilla over an internal build. They know exactly what nearly stopped them from signing. No one has asked them.</p>
+      <p style="margin-bottom:16px;">MDB designs the interview framework, runs the interviews, and turns the answers into the mid-market case studies that the Centrica and Shell references cannot produce.</p>
+
+      <div class="finding-card">
+        <div class="finding-label">The Interview Framework</div>
+        <h3>5 to 10 current Gorilla clients. One recorded conversation per client.</h3>
+        <ol style="padding-left:18px; font-size:14px; line-height:2.2; color:var(--dark-text);">
+          <li>"What was the first thing that made you consider Gorilla?"</li>
+          <li>"What nearly stopped you from moving away from your internal build or your existing tools?"</li>
+          <li>"What would you tell another Head of Pricing or CFO who has not heard of Gorilla?"</li>
+          <li>"If you had to describe Gorilla to your board in one sentence, what would you say?"</li>
+          <li>"Are there any parts of the margin intelligence problem you feel are not yet solved — gaps in the product or in your team's usage?"</li>
+        </ol>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">Question 5 is the re-activation and product expansion signal. It identifies which clients are leaving capability on the table — still running only one or two of the three pillars.</p>
+      </div>
+
+      <div class="methodology-callout">
+        <strong>Quality bar for case studies:</strong><br>
+        BAD: "We helped an energy retailer improve their margin accuracy."<br>
+        GOOD: "Domestic supplier, 180,000 customers. Settlement leakage was running at 1.6% of annual revenue — £2.9 million per year. Six months after Gorilla deployment: 0.4%. Finance Director said the monthly reconciliation went from a post-mortem to a confirmation."
+      </div>
+    </div>
+
+    <!-- SECTION 10 — 30-DAY PLAYBOOK -->
+    <div class="section" id="section-10">
+      <div class="section-header">
+        <span class="section-num">Section 10</span>
+        <h2 class="section-title">The 30-Day Playbook</h2>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Week / Month</th>
+            <th>What Runs</th>
+            <th>Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--primary)">Week 1</strong></td>
+            <td>Cold email to 15 confirmed buying-window energy retailers. LinkedIn Day 0 hook to Ruben's connection list.</td>
+            <td>First replies within 5 days. Booking link live.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--primary)">Week 2</strong></td>
+            <td>LinkedIn posts 1 and 2 published. Pre-call system live for anyone who has booked.</td>
+            <td>First CFO or Head of Pricing comments captured. Email addresses collected.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--primary)">Week 3</strong></td>
+            <td>Re-activation campaign begins to existing Gorilla clients.</td>
+            <td>Existing client conversations open about configurator expansion.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--primary)">Week 4</strong></td>
+            <td>Landing page live as main outreach destination. Nurture sequence active for all captured emails.</td>
+            <td>20-week pipeline building from week 1.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--primary)">Month 2</strong></td>
+            <td>Email 2 (Friction) to all non-replies. LinkedIn post 3 published. European Tier 2 outreach begins.</td>
+            <td>Pipeline maturing. Customer interviews begin.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--primary)">Month 3</strong></td>
+            <td>Mid-market case study live on landing page. Hot bucket alerts active. Re-activation campaign launched.</td>
+            <td>Demand gen function running. First mid-market case study in market. Commercial team has warm alerts, not cold guesses.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 11 — FAQs -->
+    <div class="section" id="section-11">
+      <div class="section-header">
+        <span class="section-num">Section 11</span>
+        <h2 class="section-title">FAQs</h2>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">"Can you do this without disrupting our existing partner relationships with Capco and CGI?"</div>
+        <div class="faq-a">Yes. The signal-based outbound targeting mid-market energy retailers operates entirely separately from Capco and CGI's enterprise and system integration relationships. In fact, a mid-market supplier who enters Gorilla's pipeline through MDB's outreach and converts to a pilot is a potential Capco or CGI implementation engagement. The outbound channel builds the mid-market base that makes partner relationships more valuable, not less.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">"How long before Gorilla sees new mid-market conversations?"</div>
+        <div class="faq-a">First qualified conversations within the first 14 days if the Tier 1 list is outreached in week 1. The October 2026 MHHS milestone means the first 90 days are the highest-urgency window. Mid-market suppliers who are in pain now are the most responsive. Suppliers who are 12 months from their buying window are still worth reaching — they enter the nurture sequence and surface when the window opens.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">"What is the difference between this and hiring a contractor?"</div>
+        <div class="faq-a">A contractor builds capacity for a fixed period. When they leave, the knowledge goes with them. MDB installs the signal database, the outreach sequences, the qualification model, and the landing page as permanent assets. They stay on Gorilla's balance sheet when the engagement ends. The contractor costs £400 to £600 per day and takes the model with them. MDB leaves the model behind. The Senior Demand Generation Manager Gorilla is hiring will inherit the MDB infrastructure on day one.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">"Will this conflict with the demand gen hire Gorilla is making?"</div>
+        <div class="faq-a">No — it is the opposite. The demand gen hire inherits a working targeting database, live email sequences with response data, a qualification model, and a landing page that is already converting. Instead of spending months building the function from scratch, the new hire spends month one optimising the infrastructure that is already running. MDB's engagement produces the system. The hire runs it. That is the right division of labour.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 12 — ABOUT JEAN -->
+    <div class="section" id="section-12">
+      <div class="section-header">
+        <span class="section-num">Section 12</span>
+        <h2 class="section-title">About Jean</h2>
+      </div>
+      <div class="about-card">
+        <div class="about-initials">JM</div>
+        <div class="about-text">
+          <h3>Jean Mundabi Fala</h3>
+          <div class="role-label">Founder — MDB Growth Capital</div>
+          <p>MDB installs permanent revenue infrastructure for B2B companies that have proven their product but do not yet have a direct acquisition channel.</p>
+          <p>Jean researched Gorilla before reaching out. He mapped the energy retailer buying window list, wrote the emails, built the landing page, and compiled this document — before asking for a single meeting.</p>
+          <div class="about-quote">"The document you are reading is the proof of how MDB works. Every email is written. Every script is recorded. Every list is built. Nothing left for Ruben to figure out."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 13 — OFFER AND NEXT STEP -->
+    <div class="section" id="section-13">
+      <div class="section-header">
+        <span class="section-num">Section 13</span>
+        <h2 class="section-title">The Offer and Next Step</h2>
+      </div>
+
+      <div class="callout" style="margin-bottom:24px;">
+        Gorilla has the category. Gorilla has the product. Gorilla has the funding. What Gorilla does not have is a systematic way to reach mid-market UK energy retailers before they commit to an internal build during the MHHS migration window. That window is open right now. It is five months from its peak. MDB built the targeting database, the outreach sequences, and the conversion infrastructure before sending this document.
+      </div>
+
+      <p style="margin-bottom:20px;">The 40 companies on the list are not hypothetical. They are named. Segmented by signal. Ready for outreach.</p>
+
+      <div class="cta-section">
+        <h2>Two Ways to Proceed</h2>
+        <p>Book 15 minutes — Jean walks through which component to run first based on Ruben's Q1 targets and which segment of the 40 companies is hottest right now.</p>
+        <a href="https://cal.com/jean-m-8f4kbr/15min" class="btn-primary" target="_blank">Book 15 Minutes — cal.com/jean-m-8f4kbr/15min</a>
+        <p class="cta-alt">Or reply to the email with <strong>'energy retailer list'</strong> and Jean sends the confirmed entries today.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>Strategy and GTM research by Jean Mundabi Fala, MDB Growth Capital</p>
+  <p>Built for Ruben Van den Bossche, Gorilla, May 2026</p>
+</footer>
+
+</body>
+</html>

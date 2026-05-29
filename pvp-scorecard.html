@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gorilla — Margin Infrastructure Readiness Score</title>
+<style>
+  :root {
+    --g-orange: #FF6B35;
+    --g-navy: #0D1B2A;
+    --g-navy-mid: #1A2E42;
+    --g-text: #E8EDF2;
+    --g-text-muted: #8FA3BE;
+    --g-white: #FFFFFF;
+    --g-border: rgba(255,107,53,0.15);
+    --g-border-light: rgba(255,255,255,0.08);
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--g-navy);
+    color: var(--g-text);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .scorecard-wrap {
+    max-width: 720px;
+    width: 100%;
+  }
+
+  /* HEADER */
+  .sc-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .sc-eyebrow {
+    display: inline-block;
+    background: rgba(255,107,53,0.12);
+    border: 1px solid var(--g-border);
+    color: var(--g-orange);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .sc-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--g-white);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .sc-sub {
+    font-size: 17px;
+    color: var(--g-text-muted);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* PROGRESS */
+  .sc-progress-bar {
+    background: var(--g-border-light);
+    height: 4px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .sc-progress-fill {
+    height: 100%;
+    background: var(--g-orange);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .sc-progress-label {
+    font-size: 13px;
+    color: var(--g-text-muted);
+    text-align: right;
+    margin-bottom: 8px;
+  }
+
+  /* QUESTION CARD */
+  .sc-question-card {
+    background: var(--g-navy-mid);
+    border: 1px solid var(--g-border-light);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 24px;
+    display: none;
+  }
+
+  .sc-question-card.active { display: block; }
+
+  .sc-q-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--g-orange);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .sc-q-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--g-white);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    margin-bottom: 28px;
+  }
+
+  .sc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sc-option {
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--g-border-light);
+    border-radius: 10px;
+    padding: 16px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--g-text);
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.45;
+  }
+
+  .sc-option:hover {
+    border-color: var(--g-orange);
+    background: rgba(255,107,53,0.06);
+    color: var(--g-white);
+  }
+
+  .sc-option.selected {
+    border-color: var(--g-orange);
+    background: rgba(255,107,53,0.1);
+    color: var(--g-white);
+  }
+
+  /* EMAIL GATE */
+  .sc-email-gate {
+    background: var(--g-navy-mid);
+    border: 1px solid var(--g-border-light);
+    border-radius: 16px;
+    padding: 48px 40px;
+    text-align: center;
+    display: none;
+  }
+
+  .sc-email-gate.active { display: block; }
+
+  .sc-email-gate-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--g-white);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+
+  .sc-email-gate-sub {
+    font-size: 16px;
+    color: var(--g-text-muted);
+    margin-bottom: 32px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sc-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .sc-input {
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid var(--g-border-light);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 16px;
+    color: var(--g-white);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .sc-input:focus { border-color: var(--g-orange); }
+  .sc-input::placeholder { color: var(--g-text-muted); }
+
+  .sc-submit {
+    background: var(--g-orange);
+    color: var(--g-white);
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+
+  .sc-submit:hover { background: #E55A25; }
+
+  /* RESULTS */
+  .sc-results {
+    background: var(--g-navy-mid);
+    border: 1px solid var(--g-border-light);
+    border-radius: 16px;
+    padding: 48px 40px;
+    text-align: center;
+    display: none;
+  }
+
+  .sc-results.active { display: block; }
+
+  .sc-score-ring {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  .sc-score-ring svg { transform: rotate(-90deg); }
+
+  .sc-score-ring circle.bg {
+    fill: none;
+    stroke: var(--g-border-light);
+    stroke-width: 10;
+  }
+
+  .sc-score-ring circle.fill {
+    fill: none;
+    stroke: var(--g-orange);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 377;
+    stroke-dashoffset: 377;
+    transition: stroke-dashoffset 1.2s ease;
+  }
+
+  .sc-score-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--g-white);
+    transform: rotate(0deg);
+  }
+
+  .sc-score-label {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--g-white);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .sc-score-sub {
+    font-size: 16px;
+    color: var(--g-text-muted);
+    margin-bottom: 32px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+  }
+
+  .sc-findings {
+    text-align: left;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--g-border-light);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .sc-findings-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--g-orange);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .sc-finding {
+    font-size: 15px;
+    color: var(--g-text-muted);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--g-border-light);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    line-height: 1.55;
+  }
+
+  .sc-finding:last-child { border-bottom: none; }
+
+  .sc-finding-icon { flex-shrink: 0; margin-top: 2px; }
+
+  .sc-cta-section { text-align: center; }
+
+  .sc-cta-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--g-white);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+
+  .sc-cta-sub {
+    font-size: 15px;
+    color: var(--g-text-muted);
+    margin-bottom: 24px;
+  }
+
+  .sc-cta-btn {
+    display: inline-block;
+    background: var(--g-orange);
+    color: var(--g-white);
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .sc-cta-btn:hover { background: #E55A25; }
+
+  .sc-footer {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--g-text-muted);
+  }
+
+  /* NAV BUTTONS */
+  .sc-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+  }
+
+  .sc-back {
+    background: transparent;
+    border: 1.5px solid var(--g-border-light);
+    color: var(--g-text-muted);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .sc-back:hover { border-color: var(--g-orange); color: var(--g-white); }
+
+  .sc-next {
+    background: var(--g-orange);
+    border: none;
+    color: var(--g-white);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+
+  .sc-next:hover { background: #E55A25; }
+  .sc-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .gorilla-brand {
+    text-align: center;
+    font-size: 14px;
+    color: var(--g-text-muted);
+    margin-top: 32px;
+  }
+
+  .gorilla-brand strong { color: var(--g-orange); }
+</style>
+</head>
+<body>
+<div class="scorecard-wrap">
+
+  <div class="sc-header">
+    <div class="sc-eyebrow">Margin Infrastructure Readiness</div>
+    <h1 class="sc-title">How exposed is your margin to MHHS?</h1>
+    <p class="sc-sub">8 questions. 3 minutes. Get your readiness score and see exactly where the margin gap is in your current infrastructure.</p>
+  </div>
+
+  <div class="sc-progress-label" id="progressLabel">Question 1 of 8</div>
+  <div class="sc-progress-bar">
+    <div class="sc-progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="sc-question-card active" id="q1">
+    <div class="sc-q-num">Question 1 of 8</div>
+    <div class="sc-q-text">How does your team currently see the company's live margin position?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="1" data-score="0">We reconcile it monthly — finance runs the numbers from billing and settlement at month end</button>
+      <button class="sc-option" data-q="1" data-score="1">We have a weekly report — someone pulls data from multiple systems and assembles it manually</button>
+      <button class="sc-option" data-q="1" data-score="2">We have near-real-time visibility but it's built internally and we worry about MHHS scalability</button>
+      <button class="sc-option" data-q="1" data-score="3">We have a live, unified margin dashboard across pricing, trading, and billing</button>
+    </div>
+    <div class="sc-nav">
+      <div></div>
+      <button class="sc-next" id="next1" disabled onclick="nextQ(1)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="sc-question-card" id="q2">
+    <div class="sc-q-num">Question 2 of 8</div>
+    <div class="sc-q-text">Where are you in the MHHS migration process?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="2" data-score="0">We haven't started formal MHHS readiness planning yet</button>
+      <button class="sc-option" data-q="2" data-score="1">We're in early stages — some meters migrated, but settlement infrastructure not yet updated</button>
+      <button class="sc-option" data-q="2" data-score="2">Actively migrating — but settlement data volumes are already straining our current tools</button>
+      <button class="sc-option" data-q="2" data-score="3">MHHS-ready — our settlement infrastructure handles half-hourly data at scale</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(2)">Back</button>
+      <button class="sc-next" id="next2" disabled onclick="nextQ(2)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="sc-question-card" id="q3">
+    <div class="sc-q-num">Question 3 of 8</div>
+    <div class="sc-q-text">How does your pricing team launch a new tariff type — for example, an EV or time-of-use product?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="3" data-score="0">We raise an IT ticket. It typically takes 4 to 8 weeks to build the new formula and test it</button>
+      <button class="sc-option" data-q="3" data-score="1">Pricing and IT work together — it takes 2 to 4 weeks depending on complexity</button>
+      <button class="sc-option" data-q="3" data-score="2">Pricing can configure most products, but complex new tariff types still need IT sign-off</button>
+      <button class="sc-option" data-q="3" data-score="3">Pricing experts configure new products without IT. A new tariff can go to market same week</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(3)">Back</button>
+      <button class="sc-next" id="next3" disabled onclick="nextQ(3)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="sc-question-card" id="q4">
+    <div class="sc-q-num">Question 4 of 8</div>
+    <div class="sc-q-text">When the settlement reconciliation file arrives, how long does it take your team to identify any margin variance?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="4" data-score="0">Days — we manually trace through billing, settlement, and the hedge book to find the source</button>
+      <button class="sc-option" data-q="4" data-score="1">Hours — we have a process but it involves pulling data from multiple systems</button>
+      <button class="sc-option" data-q="4" data-score="2">Under an hour — we can usually isolate the variance but the root cause investigation takes longer</button>
+      <button class="sc-option" data-q="4" data-score="3">Minutes — variance is flagged automatically with the contributing factors already identified</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(4)">Back</button>
+      <button class="sc-next" id="next4" disabled onclick="nextQ(4)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="sc-question-card" id="q5">
+    <div class="sc-q-num">Question 5 of 8</div>
+    <div class="sc-q-text">How confident is your CFO or Head of Commercial in the margin number they present to the board?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="5" data-score="0">They present the number with caveats — "this is our best estimate based on month-end reconciliation"</button>
+      <button class="sc-option" data-q="5" data-score="1">Reasonably confident but they know it could shift once settlement data is fully reconciled</button>
+      <button class="sc-option" data-q="5" data-score="2">Confident in the trend — the exact number varies but the direction is reliable</button>
+      <button class="sc-option" data-q="5" data-score="3">Fully confident — the number they present is the same number trading produced and settlement confirmed</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(5)">Back</button>
+      <button class="sc-next" id="next5" disabled onclick="nextQ(5)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="sc-question-card" id="q6">
+    <div class="sc-q-num">Question 6 of 8</div>
+    <div class="sc-q-text">How does your team currently monitor hedge book effectiveness against actual retail margin?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="6" data-score="0">We don't — our ETRM shows the hedge position, but we can't easily connect it to retail margin outcome</button>
+      <button class="sc-option" data-q="6" data-score="1">We run a monthly analysis — a spreadsheet that tries to reconcile the hedge against billing actuals</button>
+      <button class="sc-option" data-q="6" data-score="2">We have some visibility — but it's a manual process and doesn't update in real time</button>
+      <button class="sc-option" data-q="6" data-score="3">Fully integrated — hedge effectiveness is measured live against actual customer margin, every day</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(6)">Back</button>
+      <button class="sc-next" id="next6" disabled onclick="nextQ(6)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="sc-question-card" id="q7">
+    <div class="sc-q-num">Question 7 of 8</div>
+    <div class="sc-q-text">What is your current approach to Ofgem Capital Target reporting?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="7" data-score="0">Manual process — finance assembles the Capital Target calculation from billing data each month</button>
+      <button class="sc-option" data-q="7" data-score="1">Semi-automated — we have a template but data still needs to be pulled from multiple systems</button>
+      <button class="sc-option" data-q="7" data-score="2">Mostly automated — but the final check before submission still requires manual data validation</button>
+      <button class="sc-option" data-q="7" data-score="3">Fully automated — Capital Target position updates live and the monthly submission is a two-click export</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(7)">Back</button>
+      <button class="sc-next" id="next7" disabled onclick="nextQ(7)">Next question</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="sc-question-card" id="q8">
+    <div class="sc-q-num">Question 8 of 8</div>
+    <div class="sc-q-text">If a competitor launched a new EV tariff or flex product today, how quickly could your team match it?</div>
+    <div class="sc-options">
+      <button class="sc-option" data-q="8" data-score="0">Weeks to months — new product types require significant IT and pricing team involvement</button>
+      <button class="sc-option" data-q="8" data-score="1">Several weeks — we can do it but it delays other priorities in the IT backlog</button>
+      <button class="sc-option" data-q="8" data-score="2">One to two weeks — if pricing and IT prioritise it, we can move relatively quickly</button>
+      <button class="sc-option" data-q="8" data-score="3">Days — pricing experts configure new products themselves. Speed to market is not an IT constraint</button>
+    </div>
+    <div class="sc-nav">
+      <button class="sc-back" onclick="prevQ(8)">Back</button>
+      <button class="sc-next" id="next8" disabled onclick="showEmailGate()">See my score</button>
+    </div>
+  </div>
+
+  <!-- EMAIL GATE -->
+  <div class="sc-email-gate" id="emailGate">
+    <div class="sc-email-gate-title">Your readiness score is ready</div>
+    <p class="sc-email-gate-sub">Enter your work email to see your full score, the specific gaps in your current setup, and what mid-market energy retailers with comparable profiles have done to close them.</p>
+    <div class="sc-form">
+      <input type="text" class="sc-input" id="nameInput" placeholder="Your first name" required>
+      <input type="email" class="sc-input" id="emailInput" placeholder="Work email address" required>
+      <input type="text" class="sc-input" id="companyInput" placeholder="Your company name" required>
+      <button class="sc-submit" onclick="showResults()">Show my score</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="sc-results" id="results">
+    <div class="sc-score-ring">
+      <svg viewBox="0 0 130 130" width="140" height="140">
+        <circle class="bg" cx="65" cy="65" r="60"/>
+        <circle class="fill" id="scoreCircle" cx="65" cy="65" r="60"/>
+      </svg>
+      <div class="sc-score-num" id="scoreDisplay">—</div>
+    </div>
+
+    <div class="sc-score-label" id="scoreTier">Calculating...</div>
+    <div class="sc-score-sub" id="scoreSub">—</div>
+
+    <div class="sc-findings" id="findingsBlock">
+      <div class="sc-findings-title">Where your margin exposure sits</div>
+      <div id="findingsList"></div>
+    </div>
+
+    <div class="sc-cta-section">
+      <div class="sc-cta-title">Want to see what live margin looks like for a supplier with your customer count?</div>
+      <div class="sc-cta-sub">Book a 30-minute demo. Gorilla's implementation team will show your current setup against what MHHS-ready margin intelligence looks like — using your own product portfolio as the example.</div>
+      <a href="https://gorilla.co/demo" class="sc-cta-btn">Book a demo</a>
+      <div class="sc-footer">British Gas. Shell Energy. EDF. SEFE. Drax. Average implementation: 8 to 12 weeks.</div>
+    </div>
+  </div>
+
+  <div class="gorilla-brand">
+    <strong>gorilla.</strong> Energy Margin Intelligence
+  </div>
+
+</div>
+
+<script>
+const answers = {};
+let totalScore = 0;
+
+// Option click
+document.querySelectorAll('.sc-option').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    // Deselect others in same question
+    document.querySelectorAll(`.sc-option[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+    answers[q] = parseInt(this.dataset.score);
+    // Enable next button
+    document.getElementById('next' + q).disabled = false;
+  });
+});
+
+function updateProgress(step) {
+  const pct = (step / 9) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  if (step <= 8) {
+    document.getElementById('progressLabel').textContent = 'Question ' + step + ' of 8';
+  } else {
+    document.getElementById('progressLabel').textContent = 'Almost done';
+  }
+}
+
+function nextQ(current) {
+  document.getElementById('q' + current).classList.remove('active');
+  const next = current + 1;
+  if (next <= 8) {
+    document.getElementById('q' + next).classList.add('active');
+    updateProgress(next);
+  }
+}
+
+function prevQ(current) {
+  document.getElementById('q' + current).classList.remove('active');
+  const prev = current - 1;
+  if (prev >= 1) {
+    document.getElementById('q' + prev).classList.add('active');
+    updateProgress(prev);
+  }
+}
+
+function showEmailGate() {
+  document.getElementById('q8').classList.remove('active');
+  document.getElementById('emailGate').classList.add('active');
+  updateProgress(9);
+}
+
+function showResults() {
+  const name = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+  const company = document.getElementById('companyInput').value.trim();
+
+  if (!name || !email || !company) {
+    alert('Please fill in all fields to see your score.');
+    return;
+  }
+
+  // Calculate score
+  let raw = 0;
+  for (let i = 1; i <= 8; i++) {
+    raw += (answers[i] || 0);
+  }
+  const maxRaw = 24;
+  const pct = Math.round((raw / maxRaw) * 100);
+
+  document.getElementById('emailGate').classList.remove('active');
+  document.getElementById('results').classList.add('active');
+  document.getElementById('progressLabel').textContent = 'Results';
+  document.getElementById('progressFill').style.width = '100%';
+
+  // Score ring
+  const circumference = 377;
+  const offset = circumference - (pct / 100) * circumference;
+  const circle = document.getElementById('scoreCircle');
+  setTimeout(() => {
+    circle.style.strokeDashoffset = offset;
+    if (pct >= 70) circle.style.stroke = '#4CAF79';
+    else if (pct >= 40) circle.style.stroke = '#FF6B35';
+    else circle.style.stroke = '#E94560';
+  }, 100);
+
+  document.getElementById('scoreDisplay').textContent = pct + '%';
+
+  // Tier messaging
+  let tier, sub;
+  if (pct >= 75) {
+    tier = 'Strong margin infrastructure';
+    sub = company + ' has solid margin visibility foundations. The next step is optimising for MHHS data volumes and ensuring live settlement integration is in place before the October 2026 milestone.';
+  } else if (pct >= 45) {
+    tier = 'Moderate exposure — MHHS pressure is building';
+    sub = company + ' has some margin visibility but critical gaps in settlement integration and MHHS readiness. The 48x data volume increase from MHHS will expose these gaps before year end.';
+  } else {
+    tier = 'High exposure — margin is estimated, not measured';
+    sub = company + ' is operating with significant margin uncertainty. At 1% to 3% net margin, the gap between estimated and actual margin is the difference between a profitable quarter and a loss.';
+  }
+
+  document.getElementById('scoreTier').textContent = tier;
+  document.getElementById('scoreSub').textContent = sub;
+
+  // Findings
+  const findings = [];
+
+  if ((answers[1] || 0) < 2) {
+    findings.push({ icon: '🔴', text: 'Margin visibility is monthly or weekly — not live. Every pricing decision is made against a number that is weeks old.' });
+  }
+  if ((answers[2] || 0) < 2) {
+    findings.push({ icon: '🔴', text: 'MHHS migration readiness is partial. Settlement data volumes will increase 48 times per meter per day before October 2026.' });
+  }
+  if ((answers[3] || 0) < 2) {
+    findings.push({ icon: '🟡', text: 'New tariff launches require IT involvement — EV, time-of-use, and flex products are delayed by weeks each time a new formula is needed.' });
+  }
+  if ((answers[4] || 0) < 2) {
+    findings.push({ icon: '🔴', text: 'Settlement variance identification takes hours or days. By the time the source is found, invoices are already sent.' });
+  }
+  if ((answers[5] || 0) < 2) {
+    findings.push({ icon: '🟡', text: 'CFO confidence in the board margin number carries caveats. The underlying data reconciliation is not complete at time of presentation.' });
+  }
+  if ((answers[6] || 0) < 2) {
+    findings.push({ icon: '🟡', text: 'Hedge book effectiveness is not measured against actual retail margin in real time. The gap between hedge and outcome is visible only in hindsight.' });
+  }
+  if ((answers[7] || 0) < 2) {
+    findings.push({ icon: '🟡', text: 'Ofgem Capital Target reporting is a manual assembly process each month. Preparation time could be reduced to a two-click export.' });
+  }
+  if ((answers[8] || 0) < 2) {
+    findings.push({ icon: '🟡', text: 'Speed to market on new products is constrained by IT. A competitor who launches a new EV tariff today will be in market before your team can match it.' });
+  }
+
+  if (findings.length === 0) {
+    findings.push({ icon: '✅', text: 'Your margin infrastructure is strong. The next step is validating MHHS data volume scalability before the October 2026 milestone.' });
+  }
+
+  const list = document.getElementById('findingsList');
+  findings.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'sc-finding';
+    div.innerHTML = '<span class="sc-finding-icon">' + f.icon + '</span><span>' + f.text + '</span>';
+    list.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>

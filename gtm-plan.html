@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gorilla — GTM Plan | MDB Growth Capital</title>
+<style>
+  :root {
+    --g-orange: #FF6B35;
+    --g-navy: #0D1B2A;
+    --g-navy-mid: #1A2E42;
+    --g-text: #E8EDF2;
+    --g-text-muted: #8FA3BE;
+    --g-white: #FFFFFF;
+    --g-border: rgba(255,107,53,0.15);
+    --g-border-light: rgba(255,255,255,0.08);
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Space Grotesk', system-ui, sans-serif; background: var(--g-navy); color: var(--g-text); font-size: 16px; line-height: 1.6; padding: 0 0 80px; }
+
+  header { background: var(--g-navy-mid); border-bottom: 1px solid var(--g-border-light); padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .brand { font-size: 18px; font-weight: 700; color: var(--g-white); }
+  .brand span { color: var(--g-orange); }
+  .header-meta { font-size: 13px; color: var(--g-text-muted); text-align: right; }
+
+  .page-hero { padding: 64px 48px 40px; max-width: 1100px; margin: 0 auto; }
+  .page-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-orange); margin-bottom: 16px; }
+  .page-title { font-size: clamp(28px, 3vw, 42px); font-weight: 700; color: var(--g-white); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px; }
+  .page-sub { font-size: 17px; color: var(--g-text-muted); max-width: 680px; line-height: 1.65; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+
+  /* PILLARS */
+  .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-orange); margin-bottom: 20px; }
+  .section-title { font-size: 26px; font-weight: 700; color: var(--g-white); letter-spacing: -0.02em; margin-bottom: 32px; }
+
+  section { padding: 56px 0; border-top: 1px solid var(--g-border-light); }
+
+  .pillars-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .pillar-card { background: var(--g-navy-mid); border: 1px solid var(--g-border-light); border-radius: 12px; padding: 28px 24px; }
+  .pillar-num { font-size: 36px; font-weight: 700; color: rgba(255,107,53,0.2); letter-spacing: -0.04em; margin-bottom: 12px; }
+  .pillar-title { font-size: 15px; font-weight: 700; color: var(--g-white); margin-bottom: 10px; line-height: 1.3; }
+  .pillar-desc { font-size: 13px; color: var(--g-text-muted); line-height: 1.6; }
+
+  /* 10-DAY SEQUENCE */
+  .ten-day-grid { display: flex; flex-direction: column; gap: 2px; }
+  .day-row { display: grid; grid-template-columns: 80px 1fr; background: var(--g-navy-mid); border: 1px solid var(--g-border-light); overflow: hidden; }
+  .day-row:first-child { border-radius: 10px 10px 0 0; }
+  .day-row:last-child { border-radius: 0 0 10px 10px; }
+  .day-num { background: rgba(255,107,53,0.08); border-right: 1px solid var(--g-border-light); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--g-orange); padding: 16px 8px; text-align: center; flex-direction: column; gap: 2px; }
+  .day-label { font-size: 10px; font-weight: 500; color: var(--g-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .day-content { padding: 16px 20px; }
+  .day-channel { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-orange); margin-bottom: 4px; }
+  .day-action { font-size: 14px; color: var(--g-text); font-weight: 500; line-height: 1.4; }
+
+  /* 12-WEEK ROADMAP */
+  .roadmap-phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .phase-block { background: var(--g-navy-mid); border: 1px solid var(--g-border-light); border-radius: 12px; overflow: hidden; }
+  .phase-header { padding: 20px 24px; background: rgba(255,107,53,0.06); border-bottom: 1px solid var(--g-border-light); }
+  .phase-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-orange); margin-bottom: 6px; }
+  .phase-title { font-size: 17px; font-weight: 700; color: var(--g-white); }
+  .phase-weeks { font-size: 12px; color: var(--g-text-muted); margin-top: 4px; }
+  .phase-body { padding: 20px 24px; }
+  .phase-item { font-size: 14px; color: var(--g-text-muted); padding: 8px 0; border-bottom: 1px solid var(--g-border-light); display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+  .phase-item:last-child { border-bottom: none; }
+  .phase-item-dot { width: 6px; height: 6px; background: var(--g-orange); border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+  /* KPI TABLE */
+  .kpi-table { width: 100%; border-collapse: collapse; }
+  .kpi-table th { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-text-muted); padding: 14px 20px; border-bottom: 1px solid var(--g-border-light); text-align: left; }
+  .kpi-table td { font-size: 14px; color: var(--g-text); padding: 14px 20px; border-bottom: 1px solid var(--g-border-light); }
+  .kpi-table tr:last-child td { border-bottom: none; }
+  .kpi-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .kpi-val { font-weight: 600; color: var(--g-orange); }
+
+  footer-note { display: block; margin-top: 48px; font-size: 13px; color: var(--g-text-muted); text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">gorilla<span>.</span> × <span style="color:var(--g-text-muted);font-weight:500">MDB</span></div>
+  <div class="header-meta">GTM Plan — Ruben Van den Bossche<br>Prepared by Jean Mundabi Fala — MDB Growth Capital — 2026-05-22</div>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">Go-to-Market Plan</div>
+  <h1 class="page-title">5 Pillars. 10-Day Launch. 12-Week Roadmap.</h1>
+  <p class="page-sub">The full commercial infrastructure for reaching 40 mid-market UK and European energy retailers in active MHHS buying windows. Built on signal-based targeting, not broad awareness advertising.</p>
+</div>
+
+<!-- PILLARS -->
+<section>
+  <div class="container">
+    <div class="section-label">5 Pillars</div>
+    <div class="section-title">The infrastructure MDB installs for Gorilla's mid-market energy retailer acquisition</div>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">Signal Database</div>
+        <div class="pillar-desc">30 named UK and European energy retailers segmented by buying signal: MHHS migration status, pricing analyst job postings, Ofgem compliance data, Companies House director changes. Updated weekly. Tier 1: 15 companies with 2 or more confirmed signals.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">3-Signal Outreach Model</div>
+        <div class="pillar-desc">Signal-triggered outreach within 72 hours of a buying signal firing. Three triggers: (1) Pricing role job posting — the loudest buying signal in the market. (2) MHHS milestone missed — empathetic outreach framing. (3) Director appointment — new CFO or Head of Commercial audit window.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">Pre-Call Intelligence Briefs</div>
+        <div class="pillar-desc">Every company that responds to outreach gets a 1-page pre-call brief delivered to Gorilla's commercial team before the call. MHHS readiness score, estimated settlement leakage, primary objection likely, and specific case study most relevant to their customer count and product type.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">04</div>
+        <div class="pillar-title">Mid-Market Acquisition Page</div>
+        <div class="pillar-desc">A segment-specific landing page in the voice of the energy retailer CFO and Head of Pricing — built for the in-house build decision moment. Converts cold outreach targets who arrive curious into demo-booked prospects before Gorilla's commercial team makes a single call.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">05</div>
+        <div class="pillar-title">Margin Readiness Scorecard</div>
+        <div class="pillar-desc">8-question interactive tool that mid-market energy retailers complete before a demo. Scores their MHHS readiness and margin infrastructure gap. Gorilla's commercial team receives the completed scorecard before every call — the conversation starts at the specific gap, not at the beginning.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10-DAY SEQUENCE -->
+<section>
+  <div class="container">
+    <div class="section-label">10-Day Launch Sequence</div>
+    <div class="section-title">The first 10 days — reaching the Tier 1 list</div>
+    <div class="ten-day-grid">
+      <div class="day-row">
+        <div class="day-num">Day 1</div>
+        <div class="day-content">
+          <div class="day-channel">Database + Setup</div>
+          <div class="day-action">Finalise Tier 1 list (15 companies). Confirm decision-maker contacts. Identify which companies Gorilla already has a relationship with — route those separately to Gorilla's commercial team, not to cold outreach.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 2</div>
+        <div class="day-content">
+          <div class="day-channel">Email — Trigger Angle</div>
+          <div class="day-action">email_1 (Trigger) sends to all 15 Tier 1 contacts. Subject: "40 UK energy retailers in a buying window." Delivery CTA: "I can send the list over." No package link in this email — Trigger angle earns the list reply.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 3</div>
+        <div class="day-content">
+          <div class="day-channel">LinkedIn — Connection</div>
+          <div class="day-action">LinkedIn connection requests send to all 15 Tier 1 decision-makers. Message references Utility Week Live coverage or Energy Margin Intelligence category launch — specific to each person's LinkedIn activity.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 4</div>
+        <div class="day-content">
+          <div class="day-channel">LinkedIn — Text DM</div>
+          <div class="day-action">Text hook DM after connection accepted. References a specific post or public statement from the decision-maker about MHHS migration pressure or in-house build frustration. Ends: "Sending a quick video shortly."</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 5</div>
+        <div class="day-content">
+          <div class="day-channel">Email — Friction Angle</div>
+          <div class="day-action">email_2 (Friction) sends to all 15 contacts. Subject: "What LinkedIn ads miss for energy retailers." Package link included: "Built it already — [PACKAGE_URL]." Asks for a walkthrough of the Tier 1 list findings.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 6</div>
+        <div class="day-content">
+          <div class="day-channel">LinkedIn — Video DM</div>
+          <div class="day-action">80-second Loom video DM sends to all connected contacts. Enterprise Landing Page Explanation Framework — shows the mid-market challenger landing page and explains the conversion logic and objection handling built into it.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 7</div>
+        <div class="day-content">
+          <div class="day-channel">Qualify Replies</div>
+          <div class="day-action">First replies qualified. Any positive response gets a pre-call intelligence brief prepared. Company's MHHS status, estimated settlement leakage, likely objection, and most relevant case study all prepared before the call is booked.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 8</div>
+        <div class="day-content">
+          <div class="day-channel">Tier 2 Launch</div>
+          <div class="day-action">Tier 2 outreach begins. 15 European retailers and adjacent segment companies. Adjusted email framing for European regulatory context (e.g. Dutch ACM compliance milestones for Vandebron and ENECO instead of Ofgem Capital Target).</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 9</div>
+        <div class="day-content">
+          <div class="day-channel">Signal Monitoring</div>
+          <div class="day-action">First weekly signal database update. Re-run job board monitoring across Energy Jobline, LinkedIn Jobs, and Indeed. Check Companies House for new director appointments at all 30 companies. Flag any new Tier 1 signals for immediate outreach.</div>
+        </div>
+      </div>
+      <div class="day-row">
+        <div class="day-num">Day 10</div>
+        <div class="day-content">
+          <div class="day-channel">Pipeline Review</div>
+          <div class="day-action">First pipeline visibility review with Gorilla's commercial team. Confirmed interested companies routed to Gorilla's demo calendar. New signals from weekly database update actioned. Adjust outreach framing based on reply data from first 5 days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12-WEEK ROADMAP -->
+<section>
+  <div class="container">
+    <div class="section-label">12-Week Roadmap</div>
+    <div class="section-title">From database to pipeline to new mid-market contracts</div>
+    <div class="roadmap-phases">
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-label">Phase 1</div>
+          <div class="phase-title">Foundation and Launch</div>
+          <div class="phase-weeks">Weeks 1 to 4</div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Tier 1 signal database finalised and verified — 15 companies with 2 or more confirmed signals</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>email_1 (Trigger) and email_2 (Friction) sequences active across Tier 1 list</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>LinkedIn multi-step sequence running parallel to email — connection, text hook, video DM</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Tier 2 European retailer outreach begins at week 2</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>First reply qualification underway — pre-call briefs prepared for positive responses</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Target: 3 to 5 qualified conversations booked by end of week 4</span></div>
+        </div>
+      </div>
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-label">Phase 2</div>
+          <div class="phase-title">Pipeline Build and Optimisation</div>
+          <div class="phase-weeks">Weeks 5 to 8</div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Weekly signal database updates — new job postings, director changes, Ofgem actions added within 72 hours</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>First wave of conversations completed — learnings applied to outreach framing and objection handling</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Tier 1 non-responders re-engaged with a second signal-specific approach based on new database data</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Gorilla case study relevance mapping — each active prospect matched to the Centrica or Synergy case study most relevant to their customer book size</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Target: 1 to 2 pilots or demos progressed to commercial proposal stage by week 8</span></div>
+        </div>
+      </div>
+      <div class="phase-block">
+        <div class="phase-header">
+          <div class="phase-label">Phase 3</div>
+          <div class="phase-title">MHHS Window Close — Pre-October Sprint</div>
+          <div class="phase-weeks">Weeks 9 to 12</div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-item"><div class="phase-item-dot"></div><span>October 2026 MHHS 80% milestone urgency outreach — specific messaging to companies still in early MHHS readiness stages</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Full database review — all 80 UK licensed suppliers checked against updated signal criteria</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Scorecard completion data from the mid-market challenger page used to identify highest-readiness prospects for priority outreach</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Gorilla's commercial team receives complete pre-call briefs for all active pipeline companies before any demo or discovery call</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>Target: 1 to 2 new mid-market contracts signed or in final negotiation by week 12</span></div>
+          <div class="phase-item"><div class="phase-item-dot"></div><span>System handed to Gorilla as permanent owned infrastructure — not paused at end of engagement</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI TABLE -->
+<section>
+  <div class="container">
+    <div class="section-label">Key Performance Indicators</div>
+    <div class="section-title">What success looks like at each stage</div>
+    <table class="kpi-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Week 4 Target</th>
+          <th>Week 8 Target</th>
+          <th>Week 12 Target</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tier 1 companies contacted</td>
+          <td class="kpi-val">15</td>
+          <td class="kpi-val">15 + re-engagement</td>
+          <td class="kpi-val">30 (Tier 1 + 2)</td>
+          <td>All Tier 1 in sequence by day 5</td>
+        </tr>
+        <tr>
+          <td>Qualified conversations</td>
+          <td class="kpi-val">3 to 5</td>
+          <td class="kpi-val">6 to 10</td>
+          <td class="kpi-val">10 to 15</td>
+          <td>Signal-qualified, not volume</td>
+        </tr>
+        <tr>
+          <td>Demo or discovery calls</td>
+          <td class="kpi-val">1 to 3</td>
+          <td class="kpi-val">3 to 6</td>
+          <td class="kpi-val">5 to 8</td>
+          <td>Pre-call brief delivered before every call</td>
+        </tr>
+        <tr>
+          <td>Commercial proposals sent</td>
+          <td class="kpi-val">0</td>
+          <td class="kpi-val">1 to 2</td>
+          <td class="kpi-val">2 to 4</td>
+          <td>Mid-market ACV £150,000 to £300,000</td>
+        </tr>
+        <tr>
+          <td>New mid-market contracts</td>
+          <td class="kpi-val">0</td>
+          <td class="kpi-val">0 to 1</td>
+          <td class="kpi-val">1 to 2</td>
+          <td>£400,000 to £600,000 new ARR</td>
+        </tr>
+        <tr>
+          <td>Signal database — companies monitored</td>
+          <td class="kpi-val">30</td>
+          <td class="kpi-val">50+</td>
+          <td class="kpi-val">80 (all UK licensed suppliers)</td>
+          <td>Weekly updates, owned by Gorilla at conclusion</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="container">
+  <footer-note>GTM Plan prepared by MDB Growth Capital. Strategy and GTM research by Jean Mundabi Fala. For Gorilla — Ruben Van den Bossche.</footer-note>
+</div>
+
+</body>
+</html>
